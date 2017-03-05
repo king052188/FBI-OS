@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<?php
+$url_secured = $helper["status"];
+?>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Sign In | Load4wrd Admin</title>
+    <!-- Favicon-->
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <!-- Bootstrap Core Css -->
+    <link href="{{ asset("/plugins/bootstrap/bootstrap/css/bootstrap.css", $url_secured) }}" rel="stylesheet">
+    <!-- Waves Effect Css -->
+    <link href="{{ asset("/plugins/bootstrap/node-waves/waves.css", $url_secured) }}" rel="stylesheet" />
+    <!-- Animation Css -->
+    <link href="{{ asset("/plugins/bootstrap/animate-css/animate.css", $url_secured) }}" rel="stylesheet" />
+    <!-- Custom Css -->
+    <link href="{{ asset("/css/style.css", $url_secured) }}" rel="stylesheet">
+    <style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-overflow-scrolling: touch;
+            background: url( {{ asset('images/pexels_photo_25349.jpg', $url_secured) }} ) no-repeat center center fixed;
+            -webkit-background-size: 100%;
+            -moz-background-size: 100%;
+            -o-background-size: 100%;
+            background-size: 100%;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+        .btn {
+            width: 400px;
+        }
+        .login-box {
+            margin: -40px;;
+        }
+    </style>
+</head>
+{{--//4267b2--}}
+<body class="login-page">
+<div class="login-box">
+    <div class="logo" style="background: #4267b2; padding: 10px;">
+        <a href="javascript:void(0);"><b>FBI</b>Registration</a>
+        <small>Sign up to start your FBI Damayan!</small>
+    </div>
+    <div class="card">
+        <div class="body">
+            <form method="POST" action="/login/processing">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <div class="msg">Please fill up the form below.</div>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">face</i>
+                    </span>
+                    <div class="form-line">
+                        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First name" required autofocus>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">face</i>
+                    </span>
+                    <div class="form-line">
+                        <input type="text" class="form-control" id="middle_name" name="middle_name" placeholder="Middle name" required autofocus>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">face</i>
+                    </span>
+                    <div class="form-line">
+                        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last name" required autofocus>
+                    </div>
+                </div>
+                <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">date_range</i>
+                        </span>
+                    <div class="form-line">
+                        <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" placeholder="Date of birth" required autofocus>
+                    </div>
+                </div>
+                <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">perm_identity</i>
+                        </span>
+                    <div class="form-line">
+                        <select class="form-control" id="gender" name="gender" required>
+                            <option value="0">Gender</option>
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">email</i>
+                        </span>
+                    <div class="form-line">
+                        <input type="text" class="form-control" id="email" name="email" placeholder="Email" required autofocus>
+                    </div>
+                </div>
+                <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">phonelink_ring</i>
+                        </span>
+                    <div class="form-line">
+                        <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Mobile" required autofocus>
+                    </div>
+                </div>
+                @if( $endorser_account == null)
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">person</i>
+                        </span>
+                        <div class="form-line">
+                            <input type="text" class="form-control" id="endorsed_by" name="endorsed_by" placeholder="Endorsed by (Required)" required autofocus>
+                        </div>
+                    </div>
+                @endif
+                <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">person</i>
+                        </span>
+                    <div class="form-line">
+                        <input type="text" class="form-control" id="specialist" name="specialist" placeholder="Specialist (Optional)" >
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <img id="loginLoading" src="{{ asset('/images/facebook-24.gif', $url_secured) }}" alt="Please wait..." style="display: none; float: right;" />
+                        <button id="btnSignUp" class="btn btn-block bg-blue waves-effect" type="submit">SIGN UP</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Jquery Core Js -->
+<script src="{{ asset("js/jquery-3.1.1.min.js", $url_secured) }}"></script>
+<script src="//rawgit.com/notifyjs/notifyjs/master/dist/notify.js"></script>
+<!-- Bootstrap Core Js -->
+{{--<script src="{{ asset("plugins/bootstrap/js/bootstrap.js", $url_secured) }}"></script>--}}
+<!-- Waves Effect Plugin Js -->
+<script src="{{ asset("plugins/bootstrap/node-waves/waves.js", $url_secured) }}"></script>
+<!-- Validation Plugin Js -->
+<script src="{{ asset("plugins/bootstrap/jquery-validation/jquery.validate.js", $url_secured) }}"></script>
+<!-- Custom Js -->
+<script src="{{ asset("js/admin.js", $url_secured) }}"></script>
+<script src="{{ asset("js/scripts.js", $url_secured) }}"></script>
+<script src="{{ asset("js/sign-in.js", $url_secured) }}"></script>
+@if (session('message'))
+    <script>
+        var error_message = "{{ session('message') }}";
+        $(document).ready(function() {
+            $(".body").notify(error_message);
+        })
+    </script>
+@endif
+</body>
+</html>

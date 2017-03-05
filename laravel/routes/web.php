@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+//Route::get('/login', '');
+Route::get('/fbi-link/{endorser?}', 'MemberController@member_url_validation');
+Route::get('/sign-up/{endorser?}', 'MemberController@member_sign_up_index');
