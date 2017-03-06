@@ -6,9 +6,9 @@ $url_secured = $helper["status"];
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Sign In | Load4wrd Admin</title>
+    <title>FBI - Sign Up</title>
     <!-- Favicon-->
-    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="{{ asset('images/k-icon.png', $url_secured) }}" type="image/x-icon">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
@@ -46,7 +46,7 @@ $url_secured = $helper["status"];
 <body class="login-page">
 <div class="login-box">
     <div class="logo" style="background: #4267b2; padding: 10px;">
-        <a href="javascript:void(0);"><b>FBI</b>Registration</a>
+        <a href="javascript:void(0);"><b>FBI </b>- Registration Form</a>
         <small>Sign up to start your FBI Damayan!</small>
     </div>
     <div class="card">
@@ -136,6 +136,11 @@ $url_secured = $helper["status"];
                     <div class="col-xs-4">
                         <img id="loginLoading" src="{{ asset('/images/facebook-24.gif', $url_secured) }}" alt="Please wait..." style="display: none; float: right;" />
                         <button id="btnSignUp" class="btn btn-block bg-blue waves-effect" type="submit">SIGN UP</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <a href="/login" class="btn btn-block bg-pink waves-effect" type="submit">I ALREADY A MEMBER</a>
                     </div>
                 </div>
             </form>

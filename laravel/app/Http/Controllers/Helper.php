@@ -38,6 +38,13 @@ class Helper extends Controller
         return $data;
     }
 
+    public static function flushCookies($cookies_name = "fbi_session") {
+        \Cookie::forget($cookies_name);
+        \Cookie::queue(\Cookie::forget($cookies_name));
+
+        \Cache::flush();
+    }
+
     public static function get_random_password($value = null) {
         $random = mt_rand(10, 727379969);
         if($value == null) {
