@@ -11,8 +11,14 @@
             <i class="fa fa-angle-right"></i>
             <span>Dashboard</span>
             <div class=" navbar-right" style="margin-top: -6px;">
-                Referral Link:
-                <input type="text" id="referral_link" value="{{ url("/endorsement/link/".$member[0]->hash_code) }}" style="width: 540px; text-align: right; border: 0px;" />
+
+                <style>
+                    input#referral_link, span.referral_label {
+                        color: #B3AEAE;
+                    }
+                </style>
+                <span style="color: #B3AEAE;">Referral Link:</span>
+                <input type="text" id="referral_link" style="width: 540px; text-align: right; border: 0px;" />
                 <button id="btnCopy" class="btn btn-default">COPY</button>
                 <script>
                     var copyTextareaBtn = document.querySelector('#btnCopy');
@@ -27,6 +33,26 @@
                             console.log('Oops, unable to copy');
                         }
                     });
+                    $(document).ready(function() {
+                        var endorsement_link = "{{ url("/endorsement/link/".$member[0]->hash_code) }}";
+                        var url = "https://api-ssl.bitly.com/v3/link/lookup?url="+endorsement_link+"&access_token=52664555e49495d9285b20b6ccfb3fb15cb19a5b";
+                        $.ajax({
+                            url: url,
+                            dataType: "text",
+                            beforeSend: function () {
+                                $("#referral_link").val("*** Please Wait ***");
+                            },
+                            success: function(data) {
+                                var json = $.parseJSON(data);
+                                $(json.data).each(function(n, jData){
+                                    $(jData.link_lookup).each(function(n, link_lookup){
+                                        console.log(link_lookup.aggregate_link)
+                                        $("#referral_link").val(endorsement_link);
+                                    });
+                                });
+                            }
+                        });
+                    })
                 </script>
             </div>
         </h2>
@@ -49,7 +75,7 @@
             </div>
             <div class="content-top-1">
                 <div class="col-md-6 top-content">
-                    <h5>PBAT</h5>
+                    <h5>FIBAT</h5>
                     <label>0</label>
                 </div>
                 <div class="col-md-6 top-content1">
@@ -107,13 +133,13 @@
                             borderWidth: 0
                         },
                         series: [{
-                            name: 'PBAT',
+                            name: 'FIBAT',
                             data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
                         }, {
                             name: 'DAMAYAN',
                             data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
                         }, {
-                            name: 'RELIEVED',
+                            name: 'RECEIVED',
                             data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
                         }, {
                             name: 'SENT',
