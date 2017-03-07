@@ -64,11 +64,19 @@ class MemberController extends Controller
             return redirect('/sign-up')->with('message', 'Oops, Please select your gender.');
         }
 
-        $endorser = Helper::get_member_information($request->endorsed_by);
         $specialist = Helper::get_member_information($request->specialist);
-        
+
+        $endorser_id = 0;;
+        $endorser = Helper::getCookies('endorsement_session');
         if($endorser == null) {
-            return redirect('/sign-up')->with('message', 'Oops, Invalid endorser account name.');
+            $endorser = Helper::get_member_information($request->endorsed_by);
+            if($endorser == null) {
+                return redirect('/sign-up')->with('message', 'Oops, Invalid endorser account name.');
+            }
+            $endorser_id = $endorser[0]->Id;
+        }
+        else {
+            $endorser_id = $endorser["Id"];
         }
 
         $specialist_uid = 0;
@@ -77,8 +85,11 @@ class MemberController extends Controller
         }
 
         $hash_code = Helper::get_random_password($request->email);
+        $password_code = Helper::get_random_password("@FBI123456");
+
         $member  = new Member();
         $member-> hash_code = $hash_code["hash_password"];
+        $member-> password = $password_code["hash_password"];
         $member-> first_name = $request->first_name;
         $member-> middle_name = $request->middle_name;
         $member-> last_name = $request->last_name;
@@ -86,13 +97,13 @@ class MemberController extends Controller
         $member-> gender = $request->gender;
         $member-> email = $request->email;
         $member-> mobile = $request->mobile;
-        $member-> endorse_uid = $endorser[0]->Id;
+        $member-> endorse_uid = $endorser_id;
         $member-> specialist_uid = $specialist_uid;
         $member-> status = 1; // default 1, meaning member is not yet verified. 2 is verified!
         $result = $member->save();
 
         if($result) {
-            return redirect('/dashboard');
+            return redirect('/login');
         }
         return redirect('/sign-up')->with('message', 'Oops, Something went wrong. Please try again');
     }
@@ -102,14 +113,16 @@ class MemberController extends Controller
         $helper = Helper::ssl_secured($request);
         $member = Helper::getCookies();
 
-        $total_connected = Helper::get_total_connected($member[0]->Id);
+        if($member == null) {
+            return redirect('/logout');
+        }
 
+        $total_connected = Helper::get_total_connected($member[0]->Id);
         $statistics = array(
             "Connected" => $total_connected,
             "PBAT" => 0,
             "Damayan" => 0
         );
-
 
         return view('member.dashboard', compact('helper', 'member', 'statistics'));
     }
