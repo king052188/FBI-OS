@@ -17,5 +17,9 @@ Route::get('/', function () {
 
 Route::get('/login', 'MemberController@member_sign_in_index');
 Route::post('/login/processing', 'MemberController@member_sign_in_validation');
+
 Route::get('/endorsement/link/{endorser?}', 'MemberController@member_url_validation');
-Route::get('/sign-up/{endorser?}', 'MemberController@member_sign_up_index');
+
+Route::get('/sign-up', 'MemberController@member_sign_up_index');
+
+Route::post('/sign-up/processing', 'MemberController@member_sign_up_execute');

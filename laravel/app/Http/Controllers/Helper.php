@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
 
 class Helper extends Controller
 {
@@ -52,5 +53,17 @@ class Helper extends Controller
         }
         $result = md5('@BC12abc' . $value);
         return array("new_password" => $value, "hash_password" => $result);
+    }
+
+    public static function get_member_information($account) {
+        $random = DB::select("
+                  SELECT * FROM member_table 
+                  WHERE hash_code = '{$account}' OR username = '{$account}' 
+                  OR email = '{$account}' OR mobile = '{$account}';
+        ");
+        if( COUNT($random) > 0 ) {
+            return $random;
+        }
+        return null;
     }
 }

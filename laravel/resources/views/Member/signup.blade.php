@@ -45,13 +45,13 @@ $url_secured = $helper["status"];
 {{--//4267b2--}}
 <body class="login-page">
 <div class="login-box">
-    <div class="logo" style="background: #4267b2; padding: 10px;">
+    <div class="logo" style="background: #4267b2; padding: 10px;"  id="notifier_msg">
         <a href="javascript:void(0);"><b>FBI </b>- Registration Form</a>
         <small>Sign up to start your FBI Damayan!</small>
     </div>
     <div class="card">
         <div class="body">
-            <form method="POST" action="/login/processing">
+            <form id="form" method="POST" action="/sign-up/processing">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="msg">Please fill up the form below.</div>
                 <div class="input-group">
@@ -103,7 +103,7 @@ $url_secured = $helper["status"];
                             <i class="material-icons">email</i>
                         </span>
                     <div class="form-line">
-                        <input type="text" class="form-control" id="email" name="email" placeholder="Email" required autofocus>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" required autofocus>
                     </div>
                 </div>
                 <div class="input-group">
@@ -134,7 +134,6 @@ $url_secured = $helper["status"];
                 </div>
                 <div class="row">
                     <div class="col-xs-4">
-                        <img id="loginLoading" src="{{ asset('/images/facebook-24.gif', $url_secured) }}" alt="Please wait..." style="display: none; float: right;" />
                         <button id="btnSignUp" class="btn btn-block bg-blue waves-effect" type="submit">SIGN UP</button>
                     </div>
                 </div>
@@ -164,7 +163,7 @@ $url_secured = $helper["status"];
     <script>
         var error_message = "{{ session('message') }}";
         $(document).ready(function() {
-            $(".body").notify(error_message);
+            $("#notifier_msg").notify(error_message);
         })
     </script>
 @endif
