@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\Handler;
 use Illuminate\Http\Request;
 use App\Member;
 use DB;
@@ -9,10 +10,8 @@ use DB;
 
 class MemberController extends Controller
 {
-    //
-
+    // login processing
     public function member_sign_in_index(Request $request) {
-
         $helper = Helper::ssl_secured($request);
         Helper::flushCookies();
         return view('member.signin', compact('helper'));
@@ -23,17 +22,20 @@ class MemberController extends Controller
         $account = $request->account;
         $password = $request->password;
 
-        $selectQuery = Helper::get_member_information($account);
-        if( COUNT($selectQuery) > 0 ) {
+        $member_information = Helper::get_member_information($account);
+        if( COUNT($member_information) > 0 ) {
             $encrypted = Helper::get_random_password($password);
-            if($selectQuery[0]->password != $encrypted["hash_password"]) {
+            if($member_information[0]->password != $encrypted["hash_password"]) {
                 return redirect('/login')->with('message', 'Please enter your valid account.');
             }
         }
 
-        return redirect('/dashboard');
+        return redirect('/dashboard')
+            ->withCookie(\Cookie::make('fbi_session', $member_information, Helper::$cookie_life_default));
     }
+    // end login processing
 
+    // registration processing
     public function member_url_validation($endorser_id = null) {
 
         if($endorser_id != null) {
@@ -93,5 +95,28 @@ class MemberController extends Controller
             return redirect('/dashboard');
         }
         return redirect('/sign-up')->with('message', 'Oops, Something went wrong. Please try again');
+    }
+    // end registration processing
+
+    public function dashboard_index(Request $request) {
+        $helper = Helper::ssl_secured($request);
+        $member = Helper::getCookies();
+
+        $total_connected = Helper::get_total_connected($member[0]->Id);
+
+        $statistics = array(
+            "Connected" => $total_connected,
+            "PBAT" => 0,
+            "Damayan" => 0
+        );
+
+
+        return view('member.dashboard', compact('helper', 'member', 'statistics'));
+    }
+
+    public function member_sign_out_process(Request $request) {
+        Helper::flushCookies();
+        Helper::flushCookies("endorsement_session");
+        return redirect("/login");
     }
 }

@@ -44,7 +44,7 @@ $url_secured = $helper["status"];
 <div class="login-box">
     <div class="logo" style="background: #4267b2; padding: 10px;">
         <a href="javascript:void(0);"><b>FBI </b>- Log In Form</a>
-        <small>Sign In to start your FBI Damayan!</small>
+        <small>Sign In to start your FBI!</small>
     </div>
     <div class="card">
         <div class="body">
@@ -82,7 +82,7 @@ $url_secured = $helper["status"];
                         <a href="/forgot-password">Forgot Password?</a>
                     </div>
                     <div class="col-xs-6 align-right">
-                        <a href="/sign-up">Join to FBI Damayan?</a>
+                        <a href="/sign-up">Join to FBI PH?</a>
                     </div>
                 </div>
             </form>

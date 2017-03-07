@@ -47,7 +47,7 @@ $url_secured = $helper["status"];
 <div class="login-box">
     <div class="logo" style="background: #4267b2; padding: 10px;"  id="notifier_msg">
         <a href="javascript:void(0);"><b>FBI </b>- Registration Form</a>
-        <small>Sign up to start your FBI Damayan!</small>
+        <small>Sign up to start your FBI!</small>
     </div>
     <div class="card">
         <div class="body">

@@ -66,4 +66,13 @@ class Helper extends Controller
         }
         return null;
     }
+
+    public static function get_total_connected($uid) {
+        $total = DB::select("
+                  SELECT COUNT(*) AS total_conntected 
+                  FROM member_table WHERE endorse_uid = {$uid}
+        ");
+
+        return $total[0]->total_conntected;
+    }
 }
