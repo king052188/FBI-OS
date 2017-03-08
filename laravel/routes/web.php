@@ -23,4 +23,8 @@ Route::get('/sign-up', 'MemberController@member_sign_up_index');
 Route::post('/sign-up/processing', 'MemberController@member_sign_up_execute');
 
 Route::get('/dashboard', 'MemberController@dashboard_index');
+
+Route::get('/settings', 'MemberController@settings_index');
+Route::post('/settings/change-password', 'MemberController@settings_change_password');
+
 Route::get('/logout', 'MemberController@member_sign_out_process');

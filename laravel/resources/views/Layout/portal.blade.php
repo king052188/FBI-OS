@@ -108,11 +108,15 @@ $url_secured = $helper["status"];
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle dropdown-at" data-toggle="dropdown">
                             <span class=" name-caret">{{  preg_replace('/\s+/', '', strtolower($member[0]->first_name)) . preg_replace('/\s+/', '', strtolower($member[0]->last_name)) }}<i class="caret"></i></span>
-                            <img src="{{ asset("/images/male_avatar.png", $url_secured) }}">
+                            @if( (int)$member[0]->gender == 1)
+                                <img src="{{ asset("/images/male_avatar.png", $url_secured) }}">
+                            @else
+                                <img src="{{ asset("/images/female_avatar.png", $url_secured) }}">
+                            @endif
                         </a>
                         <ul class="dropdown-menu " role="menu">
                             <li><a href="#"><i class="fa fa-user"></i>Edit Profile</a></li>
-                            <li><a href="#"><i class="fa fa-cog"></i>Settings</a></li>
+                            <li><a href="/settings"><i class="fa fa-cog"></i>Settings</a></li>
                             <li><a href="/logout"><i class="fa fa-sign-in"></i>Logout</a></li>
                         </ul>
                     </li>

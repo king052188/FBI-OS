@@ -13,12 +13,16 @@ class MemberController extends Controller
     // login processing
     public function member_sign_in_index(Request $request) {
         $helper = Helper::ssl_secured($request);
-        Helper::flushCookies();
+        $member = Helper::getCookies();
+
+        if($member != null) {
+            return redirect('/dashboard');
+        }
+
         return view('member.signin', compact('helper'));
     }
 
     public function member_sign_in_validation(Request $request) {
-
         $account = $request->account;
         $password = $request->password;
 
@@ -125,6 +129,43 @@ class MemberController extends Controller
         );
 
         return view('member.dashboard', compact('helper', 'member', 'statistics'));
+    }
+
+    public function settings_index(Request $request) {
+        $helper = Helper::ssl_secured($request);
+        $member = Helper::getCookies();
+
+        if($member == null) {
+            return redirect('/logout');
+        }
+        return view('member.settings', compact('helper', 'member', 'statistics'));
+    }
+
+    public function settings_change_password(Request $request) {
+        $member = Helper::getCookies();
+        if($member == null) {
+            return redirect('/logout');
+        }
+
+        $current_password = $request->current_password;
+        $new_password = $request->new_password;
+
+        $encrypted1 = Helper::get_random_password($current_password);
+        $encrypted2 = Helper::get_random_password($new_password);
+
+        $user = Member::where("Id", "=", $member[0]->Id);
+        $user_get = $user->first();
+
+        $result = false;
+        if( $user_get->password == $encrypted1["hash_password"] ) {
+            $result = $user->update(["password" => $encrypted2["hash_password"]]);
+        }
+
+        if($result) {
+            return redirect('/logout');
+        }
+
+        return redirect('/settings')->with('message', 'Please enter your valid password.');
     }
 
     public function member_sign_out_process(Request $request) {
