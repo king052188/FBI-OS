@@ -11,9 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
+Route::get('/', 'TestController@index');
+
+Route::post('/account-kit/process', 'TestController@account_kit_response');
 
 Route::get('/login', 'MemberController@member_sign_in_index');
 Route::post('/login/processing', 'MemberController@member_sign_in_validation');
@@ -28,3 +32,8 @@ Route::get('/settings', 'MemberController@settings_index');
 Route::post('/settings/change-password', 'MemberController@settings_change_password');
 
 Route::get('/logout', 'MemberController@member_sign_out_process');
+
+
+
+
+
