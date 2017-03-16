@@ -5,52 +5,96 @@
     $url_secured = $helper["status"];
     ?>
     <!--banner-->
-    <div class="banner">
+    <style>
+        input#referral_link, span.referral_label {
+            color: #B3AEAE;
+        }
+
+        .banner {
+
+        }
+
+        div.kpa_custom {
+            margin-top: -6px;
+            float: right;
+        }
+
+        div.kpa_custom_referral {
+
+        }
+
+        .kpa_custom_referral input[type=text] {
+            width: 168px;
+        }
+
+        .kpa_custom_referral button {
+            width: 170px;;
+        }
+
+        @media only screen and (max-width: 505px) {
+            .banner {
+                height: 130px;
+            }
+
+            .kpa_custom_referral {
+                margin-top: 15px;
+                height: 20px;
+            }
+
+            .kpa_custom_referral input[type=text] {
+                text-align: center;
+                margin-top: 5px;
+                width: 100%;
+            }
+
+            .kpa_custom_referral button {
+                margin-top: 5px;
+                width: 100%;
+            }
+        }
+    </style>
+    <div class="banner" >
         <h2>
             {{--<a href="index.html">Home</a>--}}
             <i class="fa fa-angle-right"></i>
             <span>Dashboard</span>
-            <div class=" navbar-right" style="margin-top: -6px;">
-                <style>
-                    input#referral_link, span.referral_label {
-                        color: #B3AEAE;
-                    }
-                </style>
-                <span style="color: #B3AEAE;">Referral Link:</span>
-                <input type="text" id="referral_link" style="width: 170px; border: 0px;" />
-                <button id="btnCopy" class="btn btn-default">COPY</button>
-                <script>
-                    var copyTextareaBtn = document.querySelector('#btnCopy');
-                    copyTextareaBtn.addEventListener('click', function(event) {
-                        var copyTextarea = document.querySelector('#referral_link');
-                        copyTextarea.select();
-                        try {
-                            var successful = document.execCommand('copy');
-                            var msg = successful ? 'successful' : 'unsuccessful';
-                            console.log('Copying text command was ' + msg);
-                        } catch (err) {
-                            console.log('Oops, unable to copy');
-                        }
-                    });
-                    $(document).ready(function() {
-                        var endorsement_link = "{{ url("/endorsement/link/".$member[0]->hash_code) }}";
-                        var url = "https://api-ssl.bitly.com/v3/shorten?access_token=52664555e49495d9285b20b6ccfb3fb15cb19a5b&longUrl="+endorsement_link;
-                        $.ajax({
-                            url: url,
-                            dataType: "text",
-                            beforeSend: function () {
-                                $("#referral_link").val("*** Please Wait ***");
-                            },
-                            success: function(response) {
-                                var json = $.parseJSON(response);
-                                $(json.data).each(function(n, data){
-                                    console.log(data.url)
-                                    $("#referral_link").val(data.url);
-                                });
+            <div class="kpa_custom">
+                <div class="kpa_custom_referral">
+                    <input type="text" id="referral_link" style="border: 0px;" />
+                    <button id="btnCopy" class="btn btn-default">(COPY) Referral Link</button>
+                    <script>
+                        var copyTextareaBtn = document.querySelector('#btnCopy');
+                        copyTextareaBtn.addEventListener('click', function(event) {
+                            var copyTextarea = document.querySelector('#referral_link');
+                            copyTextarea.select();
+                            try {
+                                var successful = document.execCommand('copy');
+                                var msg = successful ? 'successful' : 'unsuccessful';
+                                console.log('Copying text command was ' + msg);
+                            } catch (err) {
+                                console.log('Oops, unable to copy');
                             }
                         });
-                    })
-                </script>
+                        $(document).ready(function() {
+                            var endorsement_link = "{{ url("/endorsement/link/".$member[0]->hash_code) }}";
+                            var url = "https://api-ssl.bitly.com/v3/shorten?access_token=52664555e49495d9285b20b6ccfb3fb15cb19a5b&longUrl="+endorsement_link;
+                            $.ajax({
+                                url: url,
+                                dataType: "text",
+                                beforeSend: function () {
+                                    $("#referral_link").val("*** Please Wait ***");
+                                },
+                                success: function(response) {
+                                    var json = $.parseJSON(response);
+                                    $(json.data).each(function(n, data){
+                                        console.log(data.url)
+                                        $("#referral_link").val(data.url);
+                                    });
+                                }
+                            });
+                        })
+                    </script>
+                </div>
             </div>
         </h2>
     </div>
@@ -92,62 +136,64 @@
             </div>
         </div>
 
-        <div class="col-md-8 content-top-2">
-            <!---start-chart---->
-            <!----->
-            <script type="text/javascript">
-                $(function () {
-                    Highcharts.chart('container', {
-                        title: {
-                            text: 'Monthly Average Gross',
-                            x: -20 //center
-                        },
-                        subtitle: {
-                            text: 'Source: www.FBI-PH.org',
-                            x: -20
-                        },
-                        xAxis: {
-                            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                        },
-                        yAxis: {
+        <div class="col-md-8">
+            <div class="content-top-1">
+
+                <script type="text/javascript">
+                    $(function () {
+                        Highcharts.chart('container', {
                             title: {
-                                text: 'Reports (₱)'
+                                text: 'Monthly Average Gross',
+                                x: -20 //center
                             },
-                            plotLines: [{
-                                value: 0,
-                                width: 1,
-                                color: '#808080'
+                            subtitle: {
+                                text: 'Source: www.FBI-PH.org',
+                                x: -20
+                            },
+                            xAxis: {
+                                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                            },
+                            yAxis: {
+                                title: {
+                                    text: 'Reports (₱)'
+                                },
+                                plotLines: [{
+                                    value: 0,
+                                    width: 1,
+                                    color: '#808080'
+                                }]
+                            },
+                            tooltip: {
+                                valueSuffix: ' ₱'
+                            },
+                            legend: {
+                                layout: 'vertical',
+                                align: 'right',
+                                verticalAlign: 'middle',
+                                borderWidth: 0
+                            },
+                            series: [{
+                                name: 'FIBAT',
+                                data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+                            }, {
+                                name: 'DAMAYAN',
+                                data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+                            }, {
+                                name: 'RECEIVED',
+                                data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+                            }, {
+                                name: 'SENT',
+                                data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
                             }]
-                        },
-                        tooltip: {
-                            valueSuffix: ' ₱'
-                        },
-                        legend: {
-                            layout: 'vertical',
-                            align: 'right',
-                            verticalAlign: 'middle',
-                            borderWidth: 0
-                        },
-                        series: [{
-                            name: 'FIBAT',
-                            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-                        }, {
-                            name: 'DAMAYAN',
-                            data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
-                        }, {
-                            name: 'RECEIVED',
-                            data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
-                        }, {
-                            name: 'SENT',
-                            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
-                        }]
+                        });
                     });
-                });
-            </script>
-            <script src="https://code.highcharts.com/highcharts.js"></script>
-            <script src="https://code.highcharts.com/modules/exporting.js"></script>
-            <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                </script>
+                <script src="https://code.highcharts.com/highcharts.js"></script>
+                <script src="https://code.highcharts.com/modules/exporting.js"></script>
+                <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+            </div>
         </div>
 
         <div class="clearfix"> </div>

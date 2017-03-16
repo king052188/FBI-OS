@@ -13,22 +13,21 @@
 
 Route::get('/', function () {
 
-    $message =      "<h3>We would like to personally welcome you to our community.</h3>";
-    $message .=     "Login: www.fbi-ph.org/login<br />";
-    $message .=     "Your Username: Clancy<br />";
-    $message .=     "Your Password: ZkwCrf<br />";
-
-//    $message = "sadasd";
-    $data = array(
-        "name" => "Paulo Aquino",
-        "to" => "me@kpa21.com",
-        "subject" => "Sample111",
-        "message" => $message
-    );
-
-    $h = \App\Http\Controllers\Helper::post_email_send(3, "FBI.Notification", $data);
-
-    dd($h);
+//    $message =      "<h3>We would like to personally welcome you to our community.</h3>";
+//    $message .=     "Login: www.fbi-ph.org/login<br />";
+//    $message .=     "Your Username: Clancy<br />";
+//    $message .=     "Your Password: ZkwCrf<br />";
+//
+//    $data = array(
+//        "name" => "Paulo Aquino",
+//        "to" => "me@kpa21.com",
+//        "subject" => "Sample111",
+//        "message" => $message
+//    );
+//
+//    $h = \App\Http\Controllers\Helper::post_password_email_send("Paulo Aquino", "me@kpa21.com", "Sample111");
+//
+//    dd($h["Status"]);
 
     return view('layout.maintenance');
 });

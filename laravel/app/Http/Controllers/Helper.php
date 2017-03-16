@@ -74,14 +74,15 @@ class Helper extends Controller
     public static function get_total_connected($uid) {
         $total = DB::select("
                   SELECT COUNT(*) AS total_conntected 
-                  FROM member_table WHERE endorse_uid = {$uid}
+                  FROM member_table 
+                  WHERE endorse_uid = {$uid}
+                  AND status > 0;
         ");
 
         return $total[0]->total_conntected;
     }
 
     public static function post_email_send($uid = 3, $temp = "FBI.Notification", $arr = array()) {
-
         if( count($arr) == 0) {
             return false;
         }
@@ -96,6 +97,22 @@ class Helper extends Controller
         $result = Helper::do_curl($query);
 
         return $result;
+    }
+
+    public static function post_password_email_send($name, $email, $password) {
+        $message =      "<h3>We would like to personally welcome you to our community.</h3>";
+        $message .=     "Login: www.fbi-ph.org/login<br />";
+        $message .=     "Your Username is Your Email or Mobile Number<br />";
+        $message .=     "Your Password: {$password}<br />";
+
+        $data = array(
+            "name" => $name,
+            "to" => $email,
+            "subject" => "FBI Verification and Account Information",
+            "message" => $message
+        );
+
+        return Helper::post_email_send(3, "FBI.Notification", $data);
     }
 
     // Method to send Get request to url

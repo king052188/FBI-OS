@@ -89,7 +89,7 @@ class MemberController extends Controller
         }
 
         $hash_code = Helper::get_random_password($request->email);
-        $password_code = Helper::get_random_password("@FBI123456");
+        $password_code = Helper::get_random_password();
 
         $member  = new Member();
         $member-> hash_code = $hash_code["hash_password"];
@@ -107,7 +107,15 @@ class MemberController extends Controller
         $result = $member->save();
 
         if($result) {
-            return redirect('/login');
+            
+            $h = Helper::post_password_email_send($request->first_name, $request->email, $password_code["new_password"]);
+
+            if($h["Status"] == 200) {
+                return redirect('/login');
+            }
+
+            return redirect('/sign-up')->with('message', 'Oops, Error sending your account information, Please contact FBI Admin.');
+
         }
         return redirect('/sign-up')->with('message', 'Oops, Something went wrong. Please try again');
     }
