@@ -80,6 +80,24 @@ class Helper extends Controller
         return $total[0]->total_conntected;
     }
 
+    public static function post_email_send($uid = 3, $temp = "FBI.Notification", $arr = array()) {
+
+        if( count($arr) == 0) {
+            return false;
+        }
+
+        $name = str_replace(" ", "%20", $arr["name"]);
+        $to = str_replace(" ", "%20", $arr["to"]);
+        $subject = str_replace(" ", "%20", $arr["subject"]);
+        $message = str_replace(" ", "%20", $arr["message"]);
+
+        $query = "http://www.fbi-ph.org:2100/mail/post/email?id={$uid}&name={$name}&email={$to}&subject={$subject}&message={$message}&temp_name={$temp}";
+
+        $result = Helper::do_curl($query);
+
+        return $result;
+    }
+
     // Method to send Get request to url
     public static function do_curl($url) {
         $ch = curl_init();
