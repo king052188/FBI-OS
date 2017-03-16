@@ -66,7 +66,7 @@
 <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('/js/jquery.countdown.min.js') }}"></script>
 <script type="text/javascript">
-    $('#countdown').countdown('2017/03/31', function(event) {
+    $('#countdown').countdown('2017/04/15', function(event) {
         $(this).html(event.strftime('%w weeks %d days <br /> %H:%M:%S'));
     });
 </script>

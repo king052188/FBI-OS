@@ -83,7 +83,7 @@ $url_secured = $helper["status"];
                             <i class="material-icons">date_range</i>
                         </span>
                     <div class="form-line">
-                        <input type="text" class="form-control" id="txt_date_of_birth" name="txt_date_of_birth" placeholder="Date of birth" required autofocus>
+                        <input type="text" class="form-control" id="txt_date_of_birth" name="txt_date_of_birth" placeholder="Date of birth">
                         <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" placeholder="Date of birth" style="display: none;" required autofocus>
                     </div>
                 </div>
@@ -170,10 +170,9 @@ $url_secured = $helper["status"];
 @endif
 <script>
     $(document).ready(function() {
-        $( "#txt_date_of_birth" ).focus(function() {
+        $( "#txt_date_of_birth" ).click(function() {
             $("#txt_date_of_birth").hide();
             $("#date_of_birth").show();
-            $("#date_of_birth").focus();
         });
     })
 </script>
