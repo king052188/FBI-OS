@@ -33,7 +33,7 @@
 
         @media only screen and (max-width: 505px) {
             .banner {
-                height: 130px;
+                height: 150px;
             }
 
             .kpa_custom_referral {
@@ -60,6 +60,7 @@
             <span>Dashboard</span>
             <div class="kpa_custom">
                 <div class="kpa_custom_referral">
+                    <input type="checkbox" id="referral_checkbox" checked/> Short URL:
                     <input type="text" id="referral_link" style="border: 0px;" />
                     <button id="btnCopy" class="btn btn-default">(COPY) Referral Link</button>
                     <script>
@@ -78,20 +79,32 @@
                         $(document).ready(function() {
                             var endorsement_link = "{{ url("/endorsement/link/".$member[0]->hash_code) }}";
                             var url = "https://api-ssl.bitly.com/v3/shorten?access_token=52664555e49495d9285b20b6ccfb3fb15cb19a5b&longUrl="+endorsement_link;
-                            $.ajax({
-                                url: url,
-                                dataType: "text",
-                                beforeSend: function () {
-                                    $("#referral_link").val("*** Please Wait ***");
-                                },
-                                success: function(response) {
-                                    var json = $.parseJSON(response);
-                                    $(json.data).each(function(n, data){
-                                        console.log(data.url)
-                                        $("#referral_link").val(data.url);
-                                    });
+
+                            $('#referral_checkbox').click(function() {
+                                if ($(this).is(':checked')) {
+                                    load_bitly();
+                                }
+                                else {
+                                    $("#referral_link").val(endorsement_link);
                                 }
                             });
+
+                            load_bitly();
+                            function load_bitly() {
+                                $.ajax({
+                                    url: url,
+                                    dataType: "text",
+                                    beforeSend: function () {
+                                        $("#referral_link").val("*** Please Wait ***");
+                                    },
+                                    success: function(response) {
+                                        var json = $.parseJSON(response);
+                                        $(json.data).each(function(n, data){
+                                            $("#referral_link").val(data.url);
+                                        });
+                                    }
+                                });
+                            }
                         })
                     </script>
                 </div>
