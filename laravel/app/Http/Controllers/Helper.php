@@ -152,16 +152,13 @@ class Helper extends Controller
 
         $data = Helper::do_curl($token_exchange_url);
 
-        dd($token_exchange_url);
-
         $user_id = $data['id'];
         $user_access_token = $data['access_token'];
         $refresh_interval = $data['token_refresh_interval_sec'];
 
-
         // Get Account Kit information
         $me_endpoint_url = 'https://graph.accountkit.com/'.$version.'/me?'.
-            'access_token=EMAWeZBzx5JVIZB9yPuORRZCpClzs1lSubE8TxCaUTrZAzBwZCWUUSQVtGtwVNoO8MAyXiy0Pt9JNeTZBkFzMArw4g2T3pRSt6ZB1cvZBdHI9V2rvPIYYSpRIwaiQqS0xMTvZBpGRwyIzv2xPebZAqFD28sTSIRJSKsXw8sZD';
+            'access_token='.$user_access_token;
 
         $data = Helper::do_curl($me_endpoint_url);
         $phone = isset($data['phone']) ? $data['phone']['number'] : '';
@@ -172,5 +169,24 @@ class Helper extends Controller
             "email_address" => $email
         );
 
+    }
+
+    public static function facebook_token($user_access_token) {
+        $version = "v1.1";
+
+        $me_endpoint_url = "https://graph.accountkit.com/{$version}/me?access_token={$user_access_token}";
+
+        $data = Helper::do_curl($me_endpoint_url);
+
+        $phone = isset($data['phone']) ? $data['phone'] : '';
+
+        $email = isset($data['email']) ? $data['email'] : '';
+
+        dd($data);
+
+        return array(
+            "phone_number" => $phone,
+            "email_address" => $email
+        );
     }
 }

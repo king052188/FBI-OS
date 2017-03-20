@@ -15,4 +15,8 @@ class TestController extends Controller
     public function account_kit_response(Request $request) {
         return Helper::facebook_account_kit_v2($request);
     }
+
+    public function account_kit_token($token) {
+        return Helper::facebook_token($token);
+    }
 }

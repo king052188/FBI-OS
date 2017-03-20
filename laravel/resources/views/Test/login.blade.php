@@ -39,7 +39,6 @@
         // login callback
         function loginCallback(response) {
             if (response.status === "PARTIALLY_AUTHENTICATED") {
-
                 var code = response.code;
                 var csrf = response.state;
 
@@ -47,11 +46,10 @@
                 console.log("CSRF: " + csrf);
 
                 // Send code to server to exchange for access token
-                document.getElementById("code").value = response.code;
-                document.getElementById("csrf").value = response.state;
+                document.getElementById("code").value = code;
+                document.getElementById("csrf").value = csrf;
 
-                document.getElementById("login_success").submit();
-
+                do_facebook_1(code, csrf);
             }
             else if (response.status === "NOT_AUTHENTICATED") {
                 // handle authentication failure
@@ -79,6 +77,48 @@
                     { },
                     loginCallback
             );
+        }
+
+        function do_facebook_1(code, csrf) {
+
+                var appId   = "239866523142614";
+               var secret   = "99647c4751d6afe5a54cbc1d4c20773b";
+              var version   = "v1.1";
+
+            var url = "https://graph.accountkit.com/"+version+"/access_token?grant_type=authorization_code&code="+code+"&access_token=AA|"+appId+"|"+secret;
+            $(document).ready( function() {
+                $.ajax({
+                    url: url,
+                    dataType: "text",
+                    beforeSend: function () {
+                    },
+                    success: function(user) {
+                        var json = $.parseJSON(user);
+                        console.log(json);
+                        do_facebook_2(json.access_token);
+                    }
+                });
+            } )
+        }
+
+        function do_facebook_2(access_token) {
+            //EMAWe2sZCEEazjKYXaYKrVclJQflWCFHY0b74bdBHfEaBExZApZBGxVPCzSuQKgd5WVd88BrRU96X6mWpd0QtG0IIP9RnUhyL6in4ZAMZBZBMZA0z5BwMRIs6FGi1W2aIlcfZBosMds3rojHWA2xDnaMpkuf6p9yTFZAXEZD
+
+            $(document).ready( function() {
+                $.ajax({
+                    url: "https://graph.accountkit.com/v1.1/me?access_token="+access_token,
+                    dataType: "text",
+                    beforeSend: function () {
+                    },
+                    success: function(user) {
+                        var json = $.parseJSON(user);
+                        console.log(json);
+                        $(json.phone).each(function(i, mobile){
+                            console.log(mobile.national_number);
+                        });
+                    }
+                });
+            } )
         }
     </script>
 

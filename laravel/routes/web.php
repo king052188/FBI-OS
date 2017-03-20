@@ -32,9 +32,11 @@ Route::get('/', function () {
     return view('layout.maintenance');
 });
 
-//Route::get('/', 'TestController@index');
+Route::get('/account-kit', 'TestController@index');
 
 Route::post('/account-kit/process', 'TestController@account_kit_response');
+
+Route::get('/account-kit/process/v2/{token}', 'TestController@account_kit_token');
 
 
 Route::get('/login', 'MemberController@member_sign_in_index');
