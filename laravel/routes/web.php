@@ -33,14 +33,13 @@ Route::get('/', function () {
 });
 
 Route::get('/account-kit', 'TestController@index');
-
 Route::post('/account-kit/process', 'TestController@account_kit_response');
-
 Route::get('/account-kit/process/v2/{token}', 'TestController@account_kit_token');
 
 
 Route::get('/login', 'MemberController@member_sign_in_index');
 Route::post('/login/processing', 'MemberController@member_sign_in_validation');
+Route::any('/login/execute/v2', 'MemberController@member_sign_in_validation_v2');
 
 Route::get('/endorsement/link/{endorser?}', 'MemberController@member_url_validation');
 Route::get('/sign-up', 'MemberController@member_sign_up_index');

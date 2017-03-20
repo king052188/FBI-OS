@@ -37,6 +37,16 @@ class MemberController extends Controller
         return redirect('/dashboard')
             ->withCookie(\Cookie::make('fbi_session', $member_information, Helper::$cookie_life_default));
     }
+
+    public function member_sign_in_validation_v2(Request $request) {
+        $account = $request->code;
+        $member_information = Helper::get_member_information($account);
+        if( COUNT($member_information) > 0 ) {
+            return redirect('/dashboard')
+                ->withCookie(\Cookie::make('fbi_session', $member_information, Helper::$cookie_life_default));
+        }
+        return redirect('/login')->with('message', 'Please enter your valid account.');
+    }
     // end login processing
 
     // registration processing

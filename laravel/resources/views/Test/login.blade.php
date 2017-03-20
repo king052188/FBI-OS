@@ -9,18 +9,15 @@
     <script src="https://sdk.accountkit.com/en_US/sdk.js"></script>
 </head>
 <body>
-    <input value="+63" id="country_code" />
-    <input placeholder="phone number" id="phone_number" value="09177715380"/>
     <button onclick="smsLogin();">Login via SMS</button>
     <div>OR</div>
-    <input placeholder="email" id="email"/>
     <button onclick="emailLogin();">Login via Email</button>
 
-    <form id="login_success" method="post" action="/account-kit/process">
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <form id="login_success" method="post" action="/login/execute/v2">
+        <input id="_token" type="hidden" name="_token">
         <input id="csrf" type="text" name="csrf" />
         <input id="code" type="text" name="code" />
-        <button>Login via Email</button>
+        <input type="submit" value="submit" />
     </form>
 
     <script>
@@ -41,13 +38,6 @@
             if (response.status === "PARTIALLY_AUTHENTICATED") {
                 var code = response.code;
                 var csrf = response.state;
-
-                console.log("Code: " + code);
-                console.log("CSRF: " + csrf);
-
-                // Send code to server to exchange for access token
-                document.getElementById("code").value = code;
-                document.getElementById("csrf").value = csrf;
 
                 do_facebook_1(code, csrf);
             }
@@ -80,7 +70,6 @@
         }
 
         function do_facebook_1(code, csrf) {
-
                 var appId   = "239866523142614";
                var secret   = "99647c4751d6afe5a54cbc1d4c20773b";
               var version   = "v1.1";
@@ -95,15 +84,13 @@
                     success: function(user) {
                         var json = $.parseJSON(user);
                         console.log(json);
-                        do_facebook_2(json.access_token);
+                        do_facebook_2(json.access_token, csrf);
                     }
                 });
             } )
         }
 
-        function do_facebook_2(access_token) {
-            //EMAWe2sZCEEazjKYXaYKrVclJQflWCFHY0b74bdBHfEaBExZApZBGxVPCzSuQKgd5WVd88BrRU96X6mWpd0QtG0IIP9RnUhyL6in4ZAMZBZBMZA0z5BwMRIs6FGi1W2aIlcfZBosMds3rojHWA2xDnaMpkuf6p9yTFZAXEZD
-
+        function do_facebook_2(access_token, csrf) {
             $(document).ready( function() {
                 $.ajax({
                     url: "https://graph.accountkit.com/v1.1/me?access_token="+access_token,
@@ -114,7 +101,11 @@
                         var json = $.parseJSON(user);
                         console.log(json);
                         $(json.phone).each(function(i, mobile){
-                            console.log(mobile.national_number);
+                            // Send code to server to exchange for access token
+                            document.getElementById("code").value = "0" + mobile.national_number;
+                            document.getElementById("csrf").value = csrf;
+                            document.getElementById("_token").value = csrf;
+                            document.getElementById("login_success").submit();
                         });
                     }
                 });
