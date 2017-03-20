@@ -37,6 +37,14 @@ $url_secured = $helper["status"];
         .login-box {
             margin: -40px;;
         }
+
+        .or_sign_in {
+            text-align: center;
+        }
+
+        button#fb_account_kit, .or_sign_in {
+            width: 400px;
+        }
     </style>
 </head>
 {{--//4267b2--}}
@@ -73,19 +81,34 @@ $url_secured = $helper["status"];
                         <label for="rememberme">Remember Me</label>
                     </div>
                     <div class="col-xs-4">
-                        <img id="loginLoading" src="{{ asset('/images/facebook-24.gif', $url_secured) }}" alt="Please wait..." style="display: none; float: right;" />
+                        <img id="loginLoading" src="{{ asset('/images/facebook.gif', $url_secured) }}" alt="Please wait..." style="display: none; float: right;" />
                         <button id="btnSignUp" class="btn btn-block bg-blue waves-effect" type="submit">SIGN IN</button>
                     </div>
                 </div>
-                <div class="row m-t-15 m-b--20">
-                    <div class="col-xs-6">
-                        <a href="/forgot-password">Forgot Password?</a>
-                    </div>
-                    <div class="col-xs-6 align-right">
-                        <a href="/sign-up">Join to FBI PH?</a>
-                    </div>
-                </div>
             </form>
+            <div class="row">
+                <div class="col-xs-4 or_sign_in">
+                    <span>OR</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    <form id="login_success" method="post" action="/login/execute/v2">
+                        <input id="_token" type="hidden" name="_token">
+                        <input id="csrf" type="hidden" name="csrf" />
+                        <input id="code" type="hidden" name="code" />
+                    </form>
+                    <button id="fb_account_kit" onclick="smsLogin();" class="btn btn-block bg-pink waves-effect">LOGIN VIA SMS</button>
+                </div>
+            </div>
+            <div class="row m-t-15 m-b--20">
+                <div class="col-xs-6">
+                    <a href="/forgot-password">Forgot Password?</a>
+                </div>
+                <div class="col-xs-6 align-right">
+                    <a href="/sign-up">Join to FBI PH?</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -99,6 +122,20 @@ $url_secured = $helper["status"];
 <!-- Validation Plugin Js -->
 <script src="{{ asset("plugins/bootstrap/jquery-validation/jquery.validate.js", $url_secured) }}"></script>
 <!-- Custom Js -->
+<script src="https://sdk.accountkit.com/en_US/sdk.js"></script>
+<script>
+    // initialize Account Kit with CSRF protection
+    AccountKit_OnInteractive = function(){
+        AccountKit.init(
+                {
+                    appId:"239866523142614",
+                    state:"{{ csrf_token() }}",
+                    version:"v1.1",
+                    debug: true
+                }
+        );
+    };
+</script>
 <script src="{{ asset("js/admin.js", $url_secured) }}"></script>
 <script src="{{ asset("js/scripts.js", $url_secured) }}"></script>
 <script src="{{ asset("js/sign-in.js", $url_secured) }}"></script>
@@ -110,5 +147,6 @@ $url_secured = $helper["status"];
         })
     </script>
 @endif
+
 </body>
 </html>

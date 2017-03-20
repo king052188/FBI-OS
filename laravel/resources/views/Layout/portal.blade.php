@@ -146,6 +146,18 @@ $url_secured = $helper["status"];
 
                         <li><a href="#" class=" hvr-bounce-to-right"><i class="fa fa-question-circle nav_icon"></i>FAQ</a></li>
 
+                        @if( IsSet($page["page"]) )
+                            @if($page["page"] == "settings")
+                                <li>
+                                    <a href="/settings" class=" hvr-bounce-to-right"><i class="fa fa-cog nav_icon"></i> <span class="nav-label">Settings</span><span class="fa arrow"></span></a>
+                                    <ul class="nav nav-second-level">
+                                        <li><a href="/settings" class=" hvr-bounce-to-right"> <i class="fa fa-plus-square nav_icon"></i>General</a></li>
+                                        <li><a href="/settings" class=" hvr-bounce-to-right"> <i class="fa fa-plus-square nav_icon"></i>Security</a></li>
+                                    </ul>
+                                </li>
+                            @endif
+                        @endif
+
                     </ul>
                 </div>
             </div>

@@ -29,7 +29,7 @@ Route::get('/', function () {
 //
 //    dd($h["Status"]);
 
-    return view('layout.maintenance');
+    return view('layout.promo');
 });
 
 Route::get('/account-kit', 'TestController@index');

@@ -156,7 +156,10 @@ class MemberController extends Controller
         if($member == null) {
             return redirect('/logout');
         }
-        return view('member.settings', compact('helper', 'member', 'statistics'));
+
+        $page = ["page" => "settings"];
+
+        return view('member.settings', compact('helper', 'member', 'statistics', 'page'));
     }
 
     public function settings_change_password(Request $request) {
