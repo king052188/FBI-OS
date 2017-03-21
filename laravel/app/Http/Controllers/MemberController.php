@@ -131,6 +131,9 @@ class MemberController extends Controller
     }
     // end registration processing
 
+
+
+
     public function dashboard_index(Request $request) {
         $helper = Helper::ssl_secured($request);
         $member = Helper::getCookies();
@@ -147,6 +150,45 @@ class MemberController extends Controller
         );
 
         return view('member.dashboard', compact('helper', 'member', 'statistics'));
+    }
+
+    public function edit_profile_index(Request $request) {
+        $helper = Helper::ssl_secured($request);
+        $member = Helper::getCookies();
+
+        if($member == null) {
+            return redirect('/logout');
+        }
+
+        $page = ["page" => "basic"];
+
+        if( IsSet( $request->page ) ) {
+
+            if($request->page == "basic") {
+                return view('member.profile_basic', compact('helper', 'member', 'statistics', 'page'));
+            }
+
+            if($request->page == "addition") {
+                return view('member.profile_addition', compact('helper', 'member', 'statistics', 'page'));
+            }
+        }
+
+        return view('layout.404', compact('helper', 'member', 'statistics', 'page'));
+
+    }
+
+    public function payment_index(Request $request) {
+        $helper = Helper::ssl_secured($request);
+        $member = Helper::getCookies();
+
+        if($member == null) {
+            return redirect('/logout');
+        }
+
+        $page = ["page" => "payment"];
+
+        return view('member.payment', compact('helper', 'member', 'statistics', 'page'));
+
     }
 
     public function settings_index(Request $request) {
