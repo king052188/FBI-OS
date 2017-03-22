@@ -14,7 +14,6 @@ class MemberController extends Controller
     public function member_sign_in_index(Request $request) {
         $helper = Helper::ssl_secured($request);
         $member = Helper::getCookies();
-
         if($member != null) {
             return redirect('/dashboard');
         }

@@ -11,23 +11,32 @@
 |
 */
 
-Route::get('/', function () {
+Route::group(['domain' => '{sub}.fbi-ph.dev'], function () {
 
-//    $message =      "<h3>We would like to personally welcome you to our community.</h3>";
-//    $message .=     "Login: www.fbi-ph.org/login<br />";
-//    $message .=     "Your Username: Clancy<br />";
-//    $message .=     "Your Password: ZkwCrf<br />";
-//
-//    $data = array(
-//        "name" => "Paulo Aquino",
-//        "to" => "me@kpa21.com",
-//        "subject" => "Sample111",
-//        "message" => $message
-//    );
-//
-//    $h = \App\Http\Controllers\Helper::post_password_email_send("Paulo Aquino", "me@kpa21.com", "Sample111");
-//
-//    dd($h["Status"]);
+    Route::get('user/', function ($sub) {
+
+        dd($sub);
+
+        if($sub == "staging") {
+
+            $staging_session = \App\Http\Controllers\Helper::getCookies('staging_session');
+
+            if($staging_session == null) {
+
+                $staging = ["staging" => true];
+
+                return redirect('/')
+                    ->withCookie(\Cookie::make('staging_session', $staging, \App\Http\Controllers\Helper::$cookie_life_default));
+            }
+
+        }
+
+        return view('layout.promo');
+
+    });
+});
+
+Route::get('/', function () {
 
     return view('layout.promo');
 });
