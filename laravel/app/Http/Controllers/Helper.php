@@ -3,17 +3,31 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use DB;
 
 class Helper extends Controller
 {
     //
+    public static $domain = "fbi-ph.dev";
     public static $cookie_life_default = 3600 / 2;
     public static $cookie_life_forever = 2000000000;
 
     public static $facebook_app_id = "239866523142614";
     public static $app_secret = "99647c4751d6afe5a54cbc1d4c20773b";
     public static $account_kit_api_version = "v1.1";
+
+    public static function sub_domain_validation($sub) {
+        $result = null;
+        switch ($sub) {
+            case "staging" :
+                $staging_session = Helper::getCookies('staging_session');
+                return $staging_session;
+            default :
+                $result = null;
+                break;
+        }
+    }
 
     public static function ssl_secured(Request $request) {
         $ssl = null;

@@ -11,10 +11,20 @@ use DB;
 class MemberController extends Controller
 {
     // login processing
-    public function member_sign_in_index(Request $request) {
+    public function member_sign_in_index(Request $request, $sub = null) {
+        if($sub != null) {
+            $staging_session = Helper::sub_domain_validation($sub);
+            if($staging_session == null) {
+                $staging = ["staging" => true];
+                return redirect("/login")
+                    ->withCookie(\Cookie::make('staging_session', $staging, Helper::$cookie_life_default));
+
+            }
+        }
+
         $helper = Helper::ssl_secured($request);
-        $member = Helper::getCookies();
-        if($member != null) {
+        $user = Helper::getCookies();
+        if($user != null) {
             return redirect('/dashboard');
         }
 
@@ -50,7 +60,6 @@ class MemberController extends Controller
 
     // registration processing
     public function member_url_validation($endorser_id = null) {
-
         if($endorser_id != null) {
             $endorser_account = Member::where("hash_code", "=", $endorser_id)->first();
             if(count($endorser_account) == 0) {
@@ -64,7 +73,17 @@ class MemberController extends Controller
         return redirect('/sign-up/');
     }
 
-    public function member_sign_up_index(Request $request) {
+    public function member_sign_up_index(Request $request, $sub = null) {
+
+        if($sub != null) {
+            $staging_session = Helper::sub_domain_validation($sub);
+            if($staging_session == null) {
+                $staging = ["staging" => true];
+                return redirect("/sign-up")
+                    ->withCookie(\Cookie::make('staging_session', $staging, Helper::$cookie_life_default));
+
+            }
+        }
 
         $helper = Helper::ssl_secured($request);
         $endorser_account = Helper::getCookies('endorsement_session');
@@ -72,7 +91,6 @@ class MemberController extends Controller
     }
 
     public function member_sign_up_execute(Request $request) {
-
         if((int)$request->gender == 0) {
             return redirect('/sign-up')->with('message', 'Oops, Please select your gender.');
         }
@@ -131,32 +149,30 @@ class MemberController extends Controller
     // end registration processing
 
 
-
-
     public function dashboard_index(Request $request) {
         $helper = Helper::ssl_secured($request);
-        $member = Helper::getCookies();
+        $user = Helper::getCookies();
 
-        if($member == null) {
+        if($user == null) {
             return redirect('/logout');
         }
 
-        $total_connected = Helper::get_total_connected($member[0]->Id);
+        $total_connected = Helper::get_total_connected($user[0]->Id);
         $statistics = array(
             "Connected" => $total_connected,
             "PBAT" => 0,
             "Damayan" => 0
         );
 
-        return view('member.dashboard', compact('helper', 'member', 'statistics'));
+        return view('member.dashboard', compact('helper', 'user', 'statistics'));
     }
 
     public function edit_profile_index(Request $request) {
         $helper = Helper::ssl_secured($request);
-        $member = Helper::getCookies();
 
-        if($member == null) {
-            return redirect('/logout');
+        $staging_session = $member = Helper::getCookies('staging_session');
+        if($staging_session == null) {
+            return view('layout.404', compact('helper'));
         }
 
         $page = ["page" => "basic"];
@@ -164,43 +180,33 @@ class MemberController extends Controller
         if( IsSet( $request->page ) ) {
 
             if($request->page == "basic") {
-                return view('member.profile_basic', compact('helper', 'member', 'statistics', 'page'));
+                return view('member.profile_basic', compact('helper', 'page'));
             }
 
             if($request->page == "addition") {
-                return view('member.profile_addition', compact('helper', 'member', 'statistics', 'page'));
+                return view('member.profile_addition', compact('helper', 'page'));
             }
         }
 
-        return view('layout.404', compact('helper', 'member', 'statistics', 'page'));
+        return view('layout.404', compact('helper'));
 
     }
 
     public function payment_index(Request $request) {
         $helper = Helper::ssl_secured($request);
-        $member = Helper::getCookies();
-
-        if($member == null) {
-            return redirect('/logout');
-        }
 
         $page = ["page" => "payment"];
 
-        return view('member.payment', compact('helper', 'member', 'statistics', 'page'));
+        return view('member.payment', compact('helper', 'page'));
 
     }
 
     public function settings_index(Request $request) {
         $helper = Helper::ssl_secured($request);
-        $member = Helper::getCookies();
-
-        if($member == null) {
-            return redirect('/logout');
-        }
 
         $page = ["page" => "settings"];
 
-        return view('member.settings', compact('helper', 'member', 'statistics', 'page'));
+        return view('member.settings', compact('helper', 'page'));
     }
 
     public function settings_change_password(Request $request) {

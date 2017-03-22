@@ -115,7 +115,7 @@ $url_secured = $helper["status"];
                             @endif
                         </a>
                         <ul class="dropdown-menu " role="menu">
-                            <li><a href="/edit-profile"><i class="fa fa-user"></i>Edit Profile</a></li>
+                            <li><a href="/edit-profile?page=basic"><i class="fa fa-user"></i>Edit Profile</a></li>
                             <li><a href="/settings"><i class="fa fa-cog"></i>Settings</a></li>
                             <li><a href="/logout"><i class="fa fa-sign-in"></i>Logout</a></li>
                         </ul>

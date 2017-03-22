@@ -77,7 +77,7 @@
                             }
                         });
                         $(document).ready(function() {
-                            var endorsement_link = "{{ url("/endorsement/link/".$member[0]->hash_code) }}";
+                            var endorsement_link = "{{ url("/endorsement/link/".$user[0]->hash_code) }}";
                             var url = "https://api-ssl.bitly.com/v3/shorten?access_token=52664555e49495d9285b20b6ccfb3fb15cb19a5b&longUrl="+endorsement_link;
 
                             $('#referral_checkbox').click(function() {

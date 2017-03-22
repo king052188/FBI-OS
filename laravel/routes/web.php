@@ -13,30 +13,16 @@
 
 Route::group(['domain' => '{sub}.fbi-ph.dev'], function () {
 
-    Route::get('user/', function ($sub) {
+    Route::get('/', 'SubDomainController@sub_validation');
 
-        dd($sub);
+    Route::get('/login', 'MemberController@member_sign_in_index');
 
-        if($sub == "staging") {
-
-            $staging_session = \App\Http\Controllers\Helper::getCookies('staging_session');
-
-            if($staging_session == null) {
-
-                $staging = ["staging" => true];
-
-                return redirect('/')
-                    ->withCookie(\Cookie::make('staging_session', $staging, \App\Http\Controllers\Helper::$cookie_life_default));
-            }
-
-        }
-
-        return view('layout.promo');
-
-    });
+    Route::get('/sign-up', 'MemberController@member_sign_up_index');
 });
 
 Route::get('/', function () {
+
+
 
     return view('layout.promo');
 });
