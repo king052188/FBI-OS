@@ -9,7 +9,7 @@ use DB;
 class Helper extends Controller
 {
     //
-    public static $domain = "fbi-ph.dev";
+    public static $domain = "fbi-ph.org";
     public static $cookie_life_default = 3600 / 2;
     public static $cookie_life_forever = 2000000000;
 
@@ -20,9 +20,11 @@ class Helper extends Controller
     public static function sub_domain_validation($sub) {
         $result = null;
         switch ($sub) {
+            case "www" :
+                return "www";
             case "staging" :
                 $staging_session = Helper::getCookies('staging_session');
-                return $staging_session;
+                return "staging";
             default :
                 $result = null;
                 break;
@@ -195,8 +197,6 @@ class Helper extends Controller
         $phone = isset($data['phone']) ? $data['phone'] : '';
 
         $email = isset($data['email']) ? $data['email'] : '';
-
-        dd($data);
 
         return array(
             "phone_number" => $phone,

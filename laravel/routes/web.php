@@ -12,25 +12,19 @@
 */
 
 Route::group(['domain' => '{sub}.fbi-ph.dev'], function () {
-
-    Route::get('/', 'SubDomainController@sub_validation');
+    
+    Route::get('/', 'PageController@landing_page');
 
     Route::get('/login', 'MemberController@member_sign_in_index');
 
     Route::get('/sign-up', 'MemberController@member_sign_up_index');
 });
 
-Route::get('/', function () {
-
-
-
-    return view('layout.promo');
-});
+Route::get('/', 'PageController@landing_page');
 
 Route::get('/account-kit', 'TestController@index');
 Route::post('/account-kit/process', 'TestController@account_kit_response');
 Route::get('/account-kit/process/v2/{token}', 'TestController@account_kit_token');
-
 
 Route::get('/login', 'MemberController@member_sign_in_index');
 Route::post('/login/processing', 'MemberController@member_sign_in_validation');

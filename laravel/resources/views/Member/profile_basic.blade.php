@@ -132,7 +132,7 @@
                 </div>
 
                 <div class="col-md-12 form-group">
-                    <button type="submit" class="btn btn-primary">Save and Go to Next Step</button>
+                    <a href="/edit-profile?page=addition" type="submit" class="btn btn-primary">Save and Go to Next Step</a>
                 </div>
 
                 <div class="clearfix"> </div>

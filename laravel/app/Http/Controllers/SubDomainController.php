@@ -10,6 +10,5 @@ class SubDomainController extends Controller
 
     public function sub_validation($sub) {
 
-        dd($sub);
     }
 }

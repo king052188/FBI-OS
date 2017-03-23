@@ -96,7 +96,7 @@
 
                 <div class="col-md-12 form-group">
                     <a href="/edit-profile?page=basic" class="btn btn-default">Previous Step</a>
-                    <button type="submit" class="btn btn-primary">Save and Go To Payment</button>
+                    <a href="/payment" type="submit" class="btn btn-primary">Save and Go To Payment</a>
                 </div>
 
                 <div class="clearfix"> </div>

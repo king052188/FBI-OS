@@ -98,7 +98,7 @@ $url_secured = $helper["status"];
                         <input id="csrf" type="hidden" name="csrf" />
                         <input id="code" type="hidden" name="code" />
                     </form>
-                    <button id="fb_account_kit" onclick="smsLogin();" class="btn btn-block bg-pink waves-effect">LOGIN VIA SMS</button>
+                    <button id="fb_account_kit" onclick="smsLogin();" class="btn btn-block bg-pink waves-effect" disabled>LOGIN VIA SMS</button>
                 </div>
             </div>
             <div class="row m-t-15 m-b--20">
