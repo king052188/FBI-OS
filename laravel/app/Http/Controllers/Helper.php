@@ -9,7 +9,7 @@ use DB;
 class Helper extends Controller
 {
     //
-    public static $domain = "fbi-ph.org";
+    public static $domain = "fbi-ph.dev";
     public static $cookie_life_default = 3600 / 2;
     public static $cookie_life_forever = 2000000000;
 
@@ -17,18 +17,30 @@ class Helper extends Controller
     public static $app_secret = "99647c4751d6afe5a54cbc1d4c20773b";
     public static $account_kit_api_version = "v1.1";
 
+    public static function domain_check($sub = "web", $path = "/", $secured = false) {
+
+        $s = $sub . ".";
+        if($sub == null) {
+            $s = "web.";
+        }
+
+        if($secured) {
+            return redirect("https://". $s . Helper::$domain . $path);
+        }
+        return redirect("http://". $s . Helper::$domain . $path);
+    }
+
     public static function sub_domain_validation($sub) {
         $result = null;
         switch ($sub) {
-            case "www" :
-                return "www";
             case "staging" :
-                $staging_session = Helper::getCookies('staging_session');
-                return "staging";
+                $result = "staging";
+                break;
             default :
-                $result = null;
+                $result = "www";
                 break;
         }
+        return $result;
     }
 
     public static function ssl_secured(Request $request) {

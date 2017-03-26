@@ -19,6 +19,13 @@ class MemberController extends Controller
                 return redirect("/login")
                     ->withCookie(\Cookie::make('staging_session', $staging, Helper::$cookie_life_default));
             }
+
+            if($sub == "www") {
+                return Helper::domain_check("web", "/login");
+            }
+        }
+        else {
+            return Helper::domain_check($sub, "/login");
         }
 
         $helper = Helper::ssl_secured($request);

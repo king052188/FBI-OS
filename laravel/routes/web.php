@@ -12,11 +12,13 @@
 */
 
 Route::group(['domain' => '{sub}.fbi-ph.dev'], function () {
+
     Route::get('/', 'PageController@landing_page');
 
     Route::get('/login', 'MemberController@member_sign_in_index');
 
     Route::get('/sign-up', 'MemberController@member_sign_up_index');
+
 });
 
 Route::get('/', 'PageController@landing_page');
