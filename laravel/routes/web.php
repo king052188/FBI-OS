@@ -12,7 +12,6 @@
 */
 
 Route::group(['domain' => '{sub}.fbi-ph.dev'], function () {
-    
     Route::get('/', 'PageController@landing_page');
 
     Route::get('/login', 'MemberController@member_sign_in_index');
@@ -40,6 +39,9 @@ Route::get('/payment', 'MemberController@payment_index');
 Route::get('/settings', 'MemberController@settings_index');
 Route::post('/settings/change-password', 'MemberController@settings_change_password');
 Route::get('/logout', 'MemberController@member_sign_out_process');
+
+
+Route::get('/robot/create/temp/username', 'TestController@re_create_temp_username');
 
 
 

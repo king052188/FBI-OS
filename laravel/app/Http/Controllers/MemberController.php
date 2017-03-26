@@ -18,7 +18,6 @@ class MemberController extends Controller
                 $staging = ["staging" => true];
                 return redirect("/login")
                     ->withCookie(\Cookie::make('staging_session', $staging, Helper::$cookie_life_default));
-
             }
         }
 
@@ -118,24 +117,33 @@ class MemberController extends Controller
         $hash_code = Helper::get_random_password($request->email);
         $password_code = Helper::get_random_password();
 
+        $user_hash_code = $hash_code["hash_password"];
+
         $member  = new Member();
-        $member-> hash_code = $hash_code["hash_password"];
-        $member-> password = $password_code["hash_password"];
-        $member-> first_name = $request->first_name;
-        $member-> middle_name = $request->middle_name;
-        $member-> last_name = $request->last_name;
-        $member-> birth_date = $request->date_of_birth;
-        $member-> gender = $request->gender;
-        $member-> email = $request->email;
-        $member-> mobile = $request->mobile;
-        $member-> endorse_uid = $endorser_id;
-        $member-> specialist_uid = $specialist_uid;
-        $member-> status = 1; // default 1, meaning member is not yet verified. 2 is verified!
+        $member->hash_code = $user_hash_code;
+        $member->password = $password_code["hash_password"];
+        $member->first_name = $request->first_name;
+        $member->middle_name = $request->middle_name;
+        $member->last_name = $request->last_name;
+        $member->birth_date = $request->date_of_birth;
+        $member->gender = $request->gender;
+        $member->email = $request->email;
+        $member->mobile = $request->mobile;
+        $member->endorse_uid = $endorser_id;
+        $member->specialist_uid = $specialist_uid;
+        $member->status = 1; // default 1, meaning member is not yet verified. 2 is verified!
         $result = $member->save();
+        $issued_uid = $member->id;
 
         if($result) {
-            
-            $h = Helper::post_password_email_send($request->first_name, $request->email, $password_code["new_password"]);
+
+            $temp_username = preg_replace('/\s+/', '', strtolower($request->first_name)) .".". $issued_uid;
+            $add_temp_username = Member::where("Id", "=", $issued_uid)
+                ->update(
+                  array("username" => $temp_username)
+                );
+
+            $h = Helper::post_password_email_send($request->first_name, $request->email, $user_hash_code, $password_code["new_password"]);
 
             if($h["Status"] == 200) {
                 return redirect('/login');
@@ -189,7 +197,6 @@ class MemberController extends Controller
         }
 
         return view('layout.404', compact('helper'));
-
     }
 
     public function payment_index(Request $request) {
