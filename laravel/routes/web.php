@@ -43,6 +43,7 @@ Route::post('/settings/change-password', 'MemberController@settings_change_passw
 Route::get('/logout', 'MemberController@member_sign_out_process');
 
 
+Route::get('/robot/create/new-hash-code', 'TestController@re_create_hash_code');
 Route::get('/robot/create/temp/username', 'TestController@re_create_temp_username');
 
 

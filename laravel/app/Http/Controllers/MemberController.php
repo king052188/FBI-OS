@@ -19,13 +19,6 @@ class MemberController extends Controller
                 return redirect("/login")
                     ->withCookie(\Cookie::make('staging_session', $staging, Helper::$cookie_life_default));
             }
-
-            if($sub == "www") {
-                return Helper::domain_check("web", "/login");
-            }
-        }
-        else {
-            return Helper::domain_check($sub, "/login");
         }
 
         $helper = Helper::ssl_secured($request);
@@ -65,18 +58,18 @@ class MemberController extends Controller
     // end login processing
 
     // registration processing
-    public function member_url_validation($endorser_id = null) {
-        if($endorser_id != null) {
-            $endorser_account = Member::where("hash_code", "=", $endorser_id)->first();
-            if(count($endorser_account) == 0) {
-                return view('layout.404', compact('helper'));
-            }
+    public function member_url_validation(Request $request, $endorser_id = null) {
+        $helper = Helper::ssl_secured($request);
 
+        $endorser_account = Member::where("hash_code", "=", $endorser_id)->first();
+
+        if(count($endorser_account) == 0) {
+            return view('layout.404', compact('helper'));
+        }
+        else {
             return redirect('/sign-up/')
                 ->withCookie(\Cookie::make('endorsement_session', $endorser_account, Helper::$cookie_life_default));
         }
-
-        return redirect('/sign-up/');
     }
 
     public function member_sign_up_index(Request $request, $sub = null) {
@@ -121,13 +114,9 @@ class MemberController extends Controller
             $specialist_uid = $specialist[0]->Id;
         }
 
-        $hash_code = Helper::get_random_password($request->email);
         $password_code = Helper::get_random_password();
 
-        $user_hash_code = $hash_code["hash_password"];
-
         $member  = new Member();
-        $member->hash_code = $user_hash_code;
         $member->password = $password_code["hash_password"];
         $member->first_name = $request->first_name;
         $member->middle_name = $request->middle_name;
@@ -144,10 +133,18 @@ class MemberController extends Controller
 
         if($result) {
 
+            $hash_code = Helper::get_random_password($request->email . $issued_uid);
+
+            $user_hash_code = $hash_code["hash_password"];
+
             $temp_username = preg_replace('/\s+/', '', strtolower($request->first_name)) .".". $issued_uid;
+
             $add_temp_username = Member::where("Id", "=", $issued_uid)
                 ->update(
-                  array("username" => $temp_username)
+                  array(
+                      "hash_code" => $user_hash_code,
+                      "username" => $temp_username
+                  )
                 );
 
             $h = Helper::post_password_email_send($request->first_name, $request->email, $user_hash_code, $password_code["new_password"]);

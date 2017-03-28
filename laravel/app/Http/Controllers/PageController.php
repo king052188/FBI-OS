@@ -11,6 +11,7 @@ class PageController extends Controller
         if($sub != null) {
 
             $staging_session = $sub; //Helper::sub_domain_validation($sub);
+
             if($staging_session == "staging") {
                 $staging = ["staging" => true];
                 return redirect("/")
@@ -24,7 +25,7 @@ class PageController extends Controller
             }
 
         }
-        return redirect("http://www.". Helper::$domain);
 
+        return view('layout.promo');
     }
 }

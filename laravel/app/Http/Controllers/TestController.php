@@ -22,10 +22,38 @@ class TestController extends Controller
         return Helper::facebook_token($token);
     }
 
+    public function re_create_hash_code() {
+
+        $member = Member::get()->toArray();
+
+        $new_hash_code = null;
+        
+        for($i = 0; $i < COUNT($member); $i++) {
+
+            $uid = $member[$i]["Id"];
+
+            $email = $member[$i]["email"];
+
+            $hash_code = Helper::get_random_password($email . $uid);
+
+            $update = Member::where("Id", "=", $uid)
+                ->update(
+                    array("hash_code" => $hash_code["hash_password"])
+                );
+
+            $new_hash_code[] = array(
+                "Hash" => $hash_code,
+                "status" => $update
+            );
+        }
+
+        return array("Result" => $new_hash_code);
+    }
+
     public function re_create_temp_username() {
 
         $member = Member::get()->toArray();
-        
+
         for($i = 0; $i < COUNT($member); $i++) {
 
             $uid = $member[$i]["Id"];
