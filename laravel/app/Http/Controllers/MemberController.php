@@ -11,16 +11,7 @@ use DB;
 class MemberController extends Controller
 {
     // login processing
-    public function member_sign_in_index(Request $request, $sub = null) {
-        if($sub != null) {
-            $staging_session = Helper::sub_domain_validation($sub);
-            if($staging_session == null) {
-                $staging = ["staging" => true];
-                return redirect("/login")
-                    ->withCookie(\Cookie::make('staging_session', $staging, Helper::$cookie_life_default));
-            }
-        }
-
+    public function member_sign_in_index(Request $request) {
         $helper = Helper::ssl_secured($request);
         $user = Helper::getCookies();
         if($user != null) {
@@ -72,18 +63,7 @@ class MemberController extends Controller
         }
     }
 
-    public function member_sign_up_index(Request $request, $sub = null) {
-
-        if($sub != null) {
-            $staging_session = Helper::sub_domain_validation($sub);
-            if($staging_session == null) {
-                $staging = ["staging" => true];
-                return redirect("/sign-up")
-                    ->withCookie(\Cookie::make('staging_session', $staging, Helper::$cookie_life_default));
-
-            }
-        }
-
+    public function member_sign_up_index(Request $request) {
         $helper = Helper::ssl_secured($request);
         $endorser_account = Helper::getCookies('endorsement_session');
         return view('member.signup', compact('helper', 'endorser_account'));
@@ -159,8 +139,7 @@ class MemberController extends Controller
         return redirect('/sign-up')->with('message', 'Oops, Something went wrong. Please try again');
     }
     // end registration processing
-
-
+    
     public function dashboard_index(Request $request) {
         $helper = Helper::ssl_secured($request);
         $user = Helper::getCookies();
@@ -182,10 +161,10 @@ class MemberController extends Controller
     public function edit_profile_index(Request $request) {
         $helper = Helper::ssl_secured($request);
 
-        $staging_session = $member = Helper::getCookies('staging_session');
-        if($staging_session == null) {
-            return view('layout.404', compact('helper'));
-        }
+//        $staging_session = $member = Helper::getCookies('staging_session');
+//        if($staging_session == null) {
+//            return view('layout.404', compact('helper'));
+//        }
 
         $page = ["page" => "basic"];
 

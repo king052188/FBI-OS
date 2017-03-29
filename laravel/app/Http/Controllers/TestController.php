@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Member;
+use DB;
 
 class TestController extends Controller
 {
@@ -67,5 +68,21 @@ class TestController extends Controller
         }
 
         return array("Result" => "DONE");
+    }
+
+    public function show_all_members($value = null) {
+        if($value == null) {
+            $member = DB::select("SELECT * FROM member_table WHERE status > 0;");
+        }
+        else {
+            $member = DB::select("SELECT * FROM member_table WHERE first_name LIKE '%{$value}%' OR middle_name LIKE '%{$value}%' OR last_name LIKE '%{$value}%' AND status > 0;;");
+        }
+        return $member;
+    }
+    
+    public function show_all_downline($value) {
+        $uid = (int)$value;
+        $member = DB::select("SELECT * FROM dbfbi_os_v1.member_table WHERE endorse_uid = {$uid} AND status > 0;");
+        return $member;
     }
 }

@@ -28,9 +28,11 @@
 
                 <div class="col-md-12 form-group2 group-mail">
                     <label class="control-label">Member Type (required)</label>
-                    <select>
+                    <select id="p_member_type">
                         <option value="0">-- Select --</option>
-                        <option value="1">Regular</option>
+                        <option value="1">FBI Associate</option>
+                        <option value="2">FBI Member (JR)</option>
+                        <option value="3">FBI Member (SR)</option>
                     </select>
                 </div>
 
@@ -44,13 +46,9 @@
                     </select>
                 </div>
 
-                <div class="col-md-12 form-group2 group-mail">
-                    <label class="control-label">Amount Deposited (required)</label>
-                    <select>
-                        <option value="0">-- Select --</option>
-                        <option value="1">P500.00</option>
-                        <option value="2">P1,500.00</option>
-                    </select>
+                <div class="col-md-12 form-group1 group-mail">
+                    <label class="control-label">Amount (required)</label>
+                    <input type="text" id="p_amount" name="p_amount" placeholder="Amount" required="">
                 </div>
 
                 <div class="clearfix"> </div>
@@ -98,5 +96,24 @@
 
     </div>
     <!--//grid-->
+
+    <script>
+        $(document).ready(function(){
+            $('#p_member_type').on('change', function() {
+                alert( this.value );
+                if( parseInt(this.value) == 1 ) {
+                    $('#p_amount').val("500.00");
+                }
+
+                if( parseInt(this.value) == 2 ) {
+                    $('#p_amount').val("1,500.00");
+                }
+
+                if( parseInt(this.value) == 3 ) {
+                    $('#p_amount').val("1,500.00");
+                }
+            })
+        });
+    </script>
 
 @endsection

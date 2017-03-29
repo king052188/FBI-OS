@@ -45,7 +45,7 @@
                 </div>
 
                 <div class="col-md-12 form-group1 group-mail">
-                    <label class="control-label">Use Home Address in Previous Form</label>
+                    <label class="control-label">Use my contact information in Previous Form</label>
                     <input type="checkbox">
                 </div>
 

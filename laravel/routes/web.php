@@ -42,9 +42,23 @@ Route::get('/settings', 'MemberController@settings_index');
 Route::post('/settings/change-password', 'MemberController@settings_change_password');
 Route::get('/logout', 'MemberController@member_sign_out_process');
 
-
 Route::get('/robot/create/new-hash-code', 'TestController@re_create_hash_code');
 Route::get('/robot/create/temp/username', 'TestController@re_create_temp_username');
+
+Route::get('/api/list-of-all-account/{value?}', 'TestController@show_all_members');
+Route::get('/api/list-of-all-downline/{value}', 'TestController@show_all_downline');
+
+Route::get('/list-of-all-account', function() {
+    return view('test.lists');
+});
+
+Route::get('/list-of-all-downline/{value}', function($value) {
+
+    $id = array("uid" => $value);
+
+    return view('test.downline', compact('id'));
+
+});
 
 
 
