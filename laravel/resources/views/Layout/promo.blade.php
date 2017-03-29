@@ -83,7 +83,7 @@
                     }
                 </style>
                 <div style="margin-top: 35px;">
-                    <a href="http://bit.ly/2m29j6j" class="btn_v2">JOIN NOW!</a>
+                    <a href="http://web.fbi-ph.org/endorsement/link/78ac81cfae86880313195fbb934a28e5" class="btn_v2">JOIN NOW!</a>
                 </div>
                 <div style="margin-top: 35px;" id="countdown"></div>
             </div>

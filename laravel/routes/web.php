@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['domain' => '{sub}.fbi-ph.dev'], function () {
+/*Route::group(['domain' => '{sub}.fbi-ph.dev'], function () {
 
     Route::get('/', 'PageController@landing_page');
 
@@ -19,7 +19,7 @@ Route::group(['domain' => '{sub}.fbi-ph.dev'], function () {
 
     Route::get('/sign-up', 'MemberController@member_sign_up_index');
 
-});
+});*/
 
 Route::get('/', 'PageController@landing_page');
 
@@ -36,8 +36,13 @@ Route::get('/sign-up', 'MemberController@member_sign_up_index');
 Route::post('/sign-up/processing', 'MemberController@member_sign_up_execute');
 
 Route::get('/dashboard', 'MemberController@dashboard_index');
+
 Route::get('/edit-profile', 'MemberController@edit_profile_index');
+Route::post('/edit-profile/{type}/execute', 'MemberController@edit_profile_execute');
+
 Route::get('/payment', 'MemberController@payment_index');
+Route::post('/payment/execute', 'MemberController@payment_execute');
+
 Route::get('/settings', 'MemberController@settings_index');
 Route::post('/settings/change-password', 'MemberController@settings_change_password');
 Route::get('/logout', 'MemberController@member_sign_out_process');

@@ -143,6 +143,18 @@ class Helper extends Controller
         return Helper::post_email_send(3, "FBI.Notification", $data);
     }
 
+    public static function post_generic_email_send($name, $email, $message, $subject) {
+
+        $data = array(
+            "name" => $name,
+            "to" => $email,
+            "subject" => $subject,
+            "message" => $message
+        );
+
+        return Helper::post_email_send(3, "FBI.Notification", $data);
+    }
+
     // Method to send Get request to url
     public static function do_curl($url) {
         $ch = curl_init();

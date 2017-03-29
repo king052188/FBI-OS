@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Exceptions\Handler;
 use Illuminate\Http\Request;
 use App\Member;
+use App\MemberBasic;
+use App\MemberBeneficiary;
+use App\Payment;
 use DB;
 
 
@@ -148,6 +151,22 @@ class MemberController extends Controller
             return redirect('/logout');
         }
 
+        $user_uid = $user[0]->Id;
+        $check_ = MemberBasic::where("uid", "=", $user_uid)->first();
+        if($check_ == null) {
+            return redirect('/edit-profile?page=basic');
+        }
+
+        $check_ = MemberBeneficiary::where("uid", "=", $user_uid)->first();
+        if($check_ == null) {
+            return redirect('/edit-profile?page=beneficiary');
+        }
+
+        $check_ = DB::select("SELECT * FROM payment_table WHERE uid = {$user_uid} AND status > 0;");
+        if($check_ == null) {
+            return redirect('/payment');
+        }
+
         $total_connected = Helper::get_total_connected($user[0]->Id);
         $statistics = array(
             "Connected" => $total_connected,
@@ -161,34 +180,229 @@ class MemberController extends Controller
     public function edit_profile_index(Request $request) {
         $helper = Helper::ssl_secured($request);
 
-//        $staging_session = $member = Helper::getCookies('staging_session');
-//        if($staging_session == null) {
-//            return view('layout.404', compact('helper'));
-//        }
+        $user = Helper::getCookies();
 
-        $page = ["page" => "basic"];
+        $user_uid = $user[0]->Id;
 
         if( IsSet( $request->page ) ) {
 
             if($request->page == "basic") {
-                return view('member.profile_basic', compact('helper', 'page'));
+
+                $page = ["page" => "basic"];
+
+                $check_ = MemberBasic::where("uid", "=", $user_uid);
+
+                $basic_info = $check_->first();
+
+                return view('member.profile_basic', compact('helper', 'basic_info', 'page'));
             }
 
-            if($request->page == "addition") {
-                return view('member.profile_addition', compact('helper', 'page'));
+            if($request->page == "beneficiary") {
+
+                $page = ["page" => "beneficiary"];
+
+                $check_ = MemberBeneficiary::where("uid", "=", $user_uid);
+
+                $beneficiary_info = $check_->first();
+
+                return view('member.profile_addition', compact('helper', 'beneficiary_info', 'page'));
             }
         }
 
         return view('layout.404', compact('helper'));
     }
 
+    public function edit_profile_execute(Request $request, $type) {
+        $user = Helper::getCookies();
+
+        $user_uid = $user[0]->Id;
+
+        if($type == "basic") {
+
+            $basic_ = $this->basic_information($request, $user_uid);
+
+            if($basic_) {
+                return redirect('/edit-profile?page=beneficiary');
+            }
+
+            return redirect('/edit-profile?page=basic')
+                ->with('message', 'Please check your information.');
+        }
+
+        if($type == "beneficiary") {
+
+            $basic_ = $this->beneficiary_information($request, $user_uid);
+
+            if($basic_) {
+                return redirect('/payment');
+            }
+
+            return redirect('/edit-profile?page=beneficiary')
+                ->with('message', 'Please check your information.');
+        }
+    }
+
+    public function basic_information(Request $request, $user_uid) {
+        $check_ = MemberBasic::where("uid", "=", $user_uid);
+
+        $is_exist = $check_->first();
+
+        $is_save = false;
+
+        if($is_exist == null) {
+            $m = new MemberBasic();
+            $m->uid = $user_uid;
+            $m->streets = $request->streets;
+            $m->barangay = $request->barangay;
+            $m->city = $request->city;
+            $m->province = $request->province;
+            $m->zip_code = $request->zip_code;
+            $m->telephone = $request->telephone;
+            $m->mobile = $request->mobile;
+            $m->education_attainment = (int)$request->education_attainment;
+            $m->profession = $request->profession;
+            $m->skills = $request->skills;
+            $m->citizenship = $request->citizenship;
+            $m->blood_type = $request->blood_type;
+            $m->civil_status = (int)$request->civil_status;
+            $m->sss_no = $request->sss_no;
+            $m->tin_no = $request->tin_no;
+
+            $is_save = $m->save();
+        }
+        else {
+
+            $updates = array(
+                "streets" => $request->streets,
+                "barangay" => $request->barangay,
+                "city" => $request->city,
+                "province" => $request->province,
+                "zip_code" => $request->zip_code,
+                "telephone" => $request->telephone,
+                "mobile" => $request->mobile,
+                "education_attainment" => (int)$request->education_attainment,
+                "profession" => $request->profession,
+                "skills" => $request->skills,
+                "citizenship" => $request->citizenship,
+                "blood_type" => $request->blood_type,
+                "civil_status" => (int)$request->civil_status,
+                "sss_no" => $request->sss_no,
+                "tin_no" => $request->tin_no
+            );
+
+            $is_save = $check_->update($updates);
+        }
+
+        return $is_save;
+    }
+
+    public function beneficiary_information(Request $request, $user_uid) {
+        $check_ = MemberBeneficiary::where("uid", "=", $user_uid);
+
+        $is_exist = $check_->first();
+
+        $is_save = false;
+
+        if($is_exist == null) {
+            $m = new MemberBeneficiary();
+            $m->uid = $user_uid;
+            $m->name_of_beneficiary = $request->name_of_beneficiary;
+            $m->same_with_primary = $request->same_with_primary == "on" ? 1 : 0;
+            $m->streets = $request->streets;
+            $m->barangay = $request->barangay;
+            $m->city = $request->city;
+            $m->province = $request->province;
+            $m->zip_code = $request->zip_code;
+            $m->telephone = $request->telephone;
+            $m->mobile = $request->mobile;
+            $m->email = $request->email;
+
+            $is_save = $m->save();
+        }
+        else {
+            $updates = array(
+                "same_with_primary" => $request->same_with_primary == "on" ? 1 : 0,
+                "streets" => $request->streets,
+                "barangay" => $request->barangay,
+                "city" => $request->city,
+                "province" => $request->province,
+                "zip_code" => $request->zip_code,
+                "telephone" => $request->telephone,
+                "mobile" => $request->mobile,
+                "email" => $request->email
+            );
+
+            $is_save = $check_->update($updates);
+        }
+
+        return $is_save;
+    }
+
     public function payment_index(Request $request) {
         $helper = Helper::ssl_secured($request);
+
+        $user = Helper::getCookies();
+
+        $user_uid = $user[0]->Id;
+
+        $is_exist = DB::select("SELECT * FROM payment_table WHERE uid = {$user_uid}1 AND status > 0;");
+
+        if( COUNT($is_exist) > 0 ) {
+            return redirect('/dashboard');
+        }
 
         $page = ["page" => "payment"];
 
         return view('member.payment', compact('helper', 'page'));
+    }
 
+    public function payment_execute(Request $request) {
+        $user = Helper::getCookies();
+        $user_uid = $user[0]->Id;
+        $type = (int)$request->p_member_type;
+
+        $amount = 500;
+        if($type > 1) {
+            $amount = 1500;
+        }
+
+        $p = new Payment();
+        $p->uid = $user_uid;
+        $p->type = $type;
+        $p->mode_of_payment = $request->mode_of_payment;
+        $p->amount = $amount;
+        $p->proof_of_payment_url = $request->proof_of_payment_url;
+        $p->confirming_a = (int)$request->confirming_a;
+        $p->confirming_b = (int)$request->confirming_b;
+        $p->confirming_c = (int)$request->confirming_c;
+        $p->status = 1;
+        $is_save = $p->save();
+
+        if($is_save) {
+
+            $check_ = Member::where("Id", "=", $user_uid);
+            $is_exist = $check_->update(
+                array(
+                    "type" => $type,
+                    "status" => 2,
+                )
+            );
+
+            $message = "Your Payment is in our queuing process.";
+            $message .= "<br />Please allow us to evaluate your account within 24 to 48 Hours.";
+
+            $h = Helper::post_generic_email_send(
+                $user[0]->first_name,
+                $user[0]->email,
+                $message,
+                "Your Payment Has Been Sent");
+
+            return redirect('/dashboard')
+                ->with('message', 'success');
+        }
+
+        return redirect('/payment')
+            ->with('message', 'Please check your information.');
     }
 
     public function settings_index(Request $request) {

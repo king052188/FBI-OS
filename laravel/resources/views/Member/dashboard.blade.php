@@ -53,6 +53,7 @@
             }
         }
     </style>
+    <a href="#" id="modal_event" class="btn btn-blue btn-lg btn-huge lato" data-toggle="modal" data-target="#myModal" style="display: none;"></a>
     <div class="banner" >
         <h2>
             {{--<a href="index.html">Home</a>--}}
@@ -272,227 +273,51 @@
         <div class="clearfix"> </div>
     </div>
 
-    <!-----
-    <div class="content-bottom">
-        <div class="col-md-6 post-top">
-            <div class="post">
-                <form class="text-area">
-                    <textarea   required="" > What are you doing...</textarea>
-                </form>
-                <div class="post-at">
-                    <ul class="icon">
-                        <div  class="post-file">
-                            <i class="fa fa-location-arrow"></i>
-                            <input id="input-1" name="input1[]" type="file" multiple="" class="">
-                        </div>
-                        <div  class="post-file">
-                            <i class="fa fa-camera"></i>
-                            <input id="input-2" name="input2[]" type="file" multiple="" class="">
-                        </div>
-                        <div  class="post-file">
-                            <i class="fa fa-video-camera"></i>
-                            <input id="input-3" name="input3[]" type="file" multiple="" class="">
-                        </div>
-                        <div  class="post-file">
-                            <i class="fa fa-microphone"></i>
-                            <input id="input-4" name="input4[]" type="file" multiple="" class="">
-                        </div>
-                        <script>
-                            $(document).on('ready', function() {
-                                $("#input-1").fileinput({showCaption: false});
-                            });
-                        </script>
-                        <script>
-                            $(document).on('ready', function() {
-                                $("#input-2").fileinput({showCaption: false});
-                            });
-                        </script>
-                        <script>
-                            $(document).on('ready', function() {
-                                $("#input-3").fileinput({showCaption: false});
-                            });
-                        </script>
-                        <script>
-                            $(document).on('ready', function() {
-                                $("#input-4").fileinput({showCaption: false});
-                            });
-                        </script>
-                    </ul>
-                    <form class="text-sub">
-                        <input type="submit" value="post">
-                    </form>
-                    <div class="clearfix"> </div>
+
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h2 id="success_noti" class="text-center"><img src="http://icons.iconarchive.com/icons/graphicloads/100-flat-2/128/check-1-icon.png" class="img-circle"><br>Success</h2>
+                    <h2 id="alert_noti" class="text-center" style="display: none;"><img src="http://icons.iconarchive.com/icons/graphicloads/100-flat-2/128/information-icon.png" class="img-circle"><br>Alert</h2>
                 </div>
-            </div>
-            <div class="post-bottom">
-                <div class="post-bottom-1">
-                    <a href="#"><i class="fa fa-facebook"></i></a>
-                    <p>15k <label>Likes</label></p>
+                <div class="modal-body row">
+                    <div id="success_msg">
+                        <h5 class="text-center">Your Payment has been sent!</h5>
+                        <h6 class="text-center" style="margin-top: 5px;">Please allow us to evaluate your account within 24 to 48 Hours.</h6>
+                    </div>
+
+                    <div id="alert_msg" style="display: none;">
+                        <h5 class="text-center">Your Account is not Activated!</h5>
+                        <h6 class="text-center" style="margin-top: 5px;">Please allow us to evaluate your account within 24 to 48 Hours</h6>
+                        <h6 class="text-center" style="margin-top: 5px;">Or Send an email to us for confirmation.</h6>
+                    </div>
                 </div>
-                <div class="post-bottom-2">
-                    <a href="#"><i class="fa fa-twitter"></i></a>
-                    <p>20M <label>Followers</label></p>
+                <div class="modal-footer">
+                    <h6 class="text-center"><a href="mailto:filipinobayanihaninc@gmail.com">For more info email us at filipinobayanihaninc@gmail.com</a></h6>
                 </div>
-                <div class="clearfix"> </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="weather">
-                <div class="weather-top">
-                    <div class="weather-top-left">
-                        <div class="degree">
-                            <figure class="icons">
-                                <canvas id="partly-cloudy-day" width="64" height="64">
-                                </canvas>
-                            </figure>
-                            <span>37°</span>
-                            <div class="clearfix"></div>
-                        </div>
-                        <script>
-                            var icons = new Skycons({"color": "#1ABC9C"}),
-                                    list  = [
-                                        "clear-night", "partly-cloudy-day",
-                                        "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-                                        "fog"
-                                    ],
-                                    i;
-
-                            for(i = list.length; i--; )
-                                icons.set(list[i], list[i]);
-
-                            icons.play();
-                        </script>
-                        <p>FRIDAY
-                            <label>13</label>
-                            <sup>th</sup>
-                            AUG
-                        </p>
-                    </div>
-                    <div class="weather-top-right">
-                        <p><i class="fa fa-map-marker"></i>lorem ipsum</p>
-                        <label>lorem ipsum</label>
-                    </div>
-                    <div class="clearfix"> </div>
-                </div>
-                <div class="weather-bottom">
-                    <div class="weather-bottom1">
-                        <div class="weather-head">
-                            <h4>Cloudy</h4>
-                            <figure class="icons">
-                                <canvas id="cloudy" width="58" height="58"></canvas>
-                            </figure>
-                            <script>
-                                var icons = new Skycons({"color": "#999"}),
-                                        list  = [
-                                            "clear-night", "cloudy",
-                                            "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-                                            "fog"
-                                        ],
-                                        i;
-
-                                for(i = list.length; i--; )
-                                    icons.set(list[i], list[i]);
-
-                                icons.play();
-                            </script>
-                            <h6>20°</h6>
-                            <div class="bottom-head">
-                                <p>August 16</p>
-                                <p>Monday</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="weather-bottom1 ">
-                        <div class="weather-head">
-                            <h4>Sunny</h4>
-                            <figure class="icons">
-                                <canvas id="clear-day" width="58" height="58">
-                                </canvas>
-                            </figure>
-                            <script>
-                                var icons = new Skycons({"color": "#999"}),
-                                        list  = [
-                                            "clear-night", "clear-day",
-                                            "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-                                            "fog"
-                                        ],
-                                        i;
-
-                                for(i = list.length; i--; )
-                                    icons.set(list[i], list[i]);
-
-                                icons.play();
-                            </script>
-                            <h6>37°</h6>
-                            <div class="bottom-head">
-                                <p>August 17</p>
-                                <p>Tuesday</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="weather-bottom1">
-                        <div class="weather-head">
-                            <h4>Rainy</h4>
-                            <figure class="icons">
-                                <canvas id="sleet" width="58" height="58">
-                                </canvas>
-                            </figure>
-                            <script>
-                                var icons = new Skycons({"color": "#999"}),
-                                        list  = [
-                                            "clear-night", "clear-day",
-                                            "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-                                            "fog"
-                                        ],
-                                        i;
-
-                                for(i = list.length; i--; )
-                                    icons.set(list[i], list[i]);
-
-                                icons.play();
-                            </script>
-
-                            <h6>7°</h6>
-                            <div class="bottom-head">
-                                <p>August 18</p>
-                                <p>Wednesday</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="weather-bottom1 ">
-                        <div class="weather-head">
-                            <h4>Snowy</h4>
-                            <figure class="icons">
-                                <canvas id="snow" width="58" height="58">
-                                </canvas>
-                            </figure>
-                            <script>
-                                var icons = new Skycons({"color": "#999"}),
-                                        list  = [
-                                            "clear-night", "clear-day",
-                                            "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-                                            "fog"
-                                        ],
-                                        i;
-
-                                for(i = list.length; i--; )
-                                    icons.set(list[i], list[i]);
-
-                                icons.play();
-                            </script>
-                            <h6>-10°</h6>
-                            <div class="bottom-head">
-                                <p>August 16</p>
-                                <p>Thursday</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clearfix"> </div>
-                </div>
-
-            </div>
-        </div>
-        <div class="clearfix"> </div>
     </div>
-    <!--//content-->
+    @if (session('message'))
+        <script>
+            $(document).ready(function() {
+                $('#modal_event').click();
+            })
+        </script>
+    @else
+        <script>
+            $(document).ready(function() {
+                var status = {{ $user[0]->status }};
+                if (status == 2) {
+                    $('#success_noti').hide();
+                    $('#alert_noti').show();
+                    $('#success_msg').hide();
+                    $('#alert_msg').show();
+                    $('#modal_event').click();
+                }
+            })
+        </script>
+    @endif
 @endsection
