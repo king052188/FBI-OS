@@ -43,6 +43,9 @@ Route::post('/edit-profile/{type}/execute', 'MemberController@edit_profile_execu
 Route::get('/payment', 'MemberController@payment_index');
 Route::post('/payment/execute', 'MemberController@payment_execute');
 
+Route::get('/members/{type}', 'MemberController@member_index');
+
+
 Route::get('/settings', 'MemberController@settings_index');
 Route::post('/settings/change-password', 'MemberController@settings_change_password');
 Route::get('/logout', 'MemberController@member_sign_out_process');

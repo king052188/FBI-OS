@@ -100,6 +100,7 @@ class MemberController extends Controller
         $password_code = Helper::get_random_password();
 
         $member  = new Member();
+        $member->role = 1;
         $member->password = $password_code["hash_password"];
         $member->first_name = $request->first_name;
         $member->middle_name = $request->middle_name;
@@ -175,6 +176,23 @@ class MemberController extends Controller
         );
 
         return view('member.dashboard', compact('helper', 'user', 'statistics'));
+    }
+
+    public function member_index(Request $request, $type) {
+        $helper = Helper::ssl_secured($request);
+        $user = Helper::getCookies();
+
+        if($user == null) {
+            return redirect('/logout');
+        }
+
+        if($user[0]->role == 1) {
+            return view('layout.404', compact('helper'));
+
+        }
+
+        return view('member.members');
+
     }
 
     public function edit_profile_index(Request $request) {

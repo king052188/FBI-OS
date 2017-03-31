@@ -110,7 +110,13 @@ $url_secured = $helper["status"];
                 <ul class=" nav_1">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle dropdown-at" data-toggle="dropdown">
-                            <span class=" name-caret">{{  preg_replace('/\s+/', '', strtolower($member[0]->first_name)) . preg_replace('/\s+/', '', strtolower($member[0]->last_name)) }}<i class="caret"></i></span>
+                            <span class=" name-caret">
+                                @if($member[0]->role == 2)
+                                    (ADMIN)
+                                @elseif ($member[0]->role == 3)
+                                    (SU-ADMIN)
+                                @endif
+                                {{ preg_replace('/\s+/', '', strtolower($member[0]->first_name)) . preg_replace('/\s+/', '', strtolower($member[0]->last_name)) }}<i class="caret"></i></span>
                             @if( (int)$member[0]->gender == 1)
                                 <img src="{{ asset("/images/male_avatar.png", $url_secured) }}">
                             @else
@@ -131,10 +137,29 @@ $url_secured = $helper["status"];
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-
                         <li>
                             <a href="/dashboard" class=" hvr-bounce-to-right" ><i class="fa fa-dashboard nav_icon "></i><span class="nav-label">Dashboards</span> </a>
                         </li>
+
+                        @if($member[0]->role > 1)
+                            <li>
+                                <a href="#" class=" hvr-bounce-to-right"><i class="fa fa-indent nav_icon"></i> <span class="nav-label">Members</span><span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <style>
+                                        .m_counts {
+                                            padding: 2px 7px 2px 7px;
+                                            border-radius: 5px;
+                                        }
+                                        .activated { background: #4267b2; color: #ffffff; }
+                                        .on_processed { background: #F65A0C; color: #ffffff; }
+                                        .pending { background: #EF0F7B; color: #ffffff; }
+                                    </style>
+                                    <li><a href="/members/activated" class=" hvr-bounce-to-right"> <i class="fa fa-area-chart nav_icon"></i>Activated <span class="m_counts activated">1,020</span></a></li>
+                                    <li><a href="/members/on-processed" class=" hvr-bounce-to-right"> <i class="fa fa-area-chart nav_icon"></i>On-Processed <span class="m_counts on_processed">20</span></a></li>
+                                    <li><a href="/members/pending" class=" hvr-bounce-to-right"> <i class="fa fa-area-chart nav_icon"></i>Pending <span class="m_counts pending">120</span></a></li>
+                                </ul>
+                            </li>
+                        @endif
 
                         <li>
                             <a href="#" class=" hvr-bounce-to-right"><i class="fa fa-indent nav_icon"></i> <span class="nav-label">Levels</span><span class="fa arrow"></span></a>
