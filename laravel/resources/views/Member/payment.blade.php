@@ -33,8 +33,8 @@
                     <select id="p_member_type" name="p_member_type">
                         <option value="0">-- Select --</option>
                         <option value="1">FBI Associate</option>
-                        <option value="2">FBI Member (JR)</option>
-                        <option value="3">FBI Member (SR)</option>
+                        <option value="2">FBI Regular</option>
+                        <option value="3">FBI SR. Regular</option>
                     </select>
                 </div>
 
@@ -59,6 +59,20 @@
                 <div class="col-md-12 form-group1 group-mail">
                     <label class="control-label">Proof of payment: Write name of the Specialist or Send a link of print-screen (<a href="https://prnt.sc/" target="_blank">https://prnt.sc/</a>) when using coins.ph or any express money senders</label>
                     <input type="text" id="proof_of_payment_url" name="proof_of_payment_url" placeholder="Proof of payment here..." required="">
+                </div>
+
+                <div class="clearfix"> </div>
+
+                <div class="col-md-12 form-group1 group-mail">
+                    <label class="control-label">Upload 1x1 ID Picture (required)</label>
+                    <a href="#" id="btnIDUpload" class="btn btn-primary">Upload</a>
+                </div>
+
+                <div class="clearfix"> </div>
+
+                <div class="col-md-12 form-group1 group-mail">
+                    <label class="control-label">Upload Scanned Signature (required)</label>
+                    <a class="btn btn-primary">Upload</a>
                 </div>
 
                 <div class="clearfix"> </div>
@@ -103,6 +117,7 @@
 
     <script>
         $(document).ready(function(){
+
             $('#p_member_type').on('change', function() {
                 if( parseInt(this.value) == 1 ) {
                     $('#p_amount').val("500.00");
@@ -113,6 +128,11 @@
                 if( parseInt(this.value) == 3 ) {
                     $('#p_amount').val("1,500.00");
                 }
+            })
+
+            $('#btnIDUpload').click(function() {
+                window.open("http://localhost:8001/demo/demo.html", "mywindow", "location=1,status=1,scrollbars=1,width=472,height=220");
+
             })
         });
     </script>
