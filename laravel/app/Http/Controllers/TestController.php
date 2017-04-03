@@ -57,14 +57,22 @@ class TestController extends Controller
 
         for($i = 0; $i < COUNT($member); $i++) {
 
-            $uid = $member[$i]["Id"];
-            $first_name = $member[$i]["first_name"];
+            $username = $member[$i]["username"];
 
-            $temp_username = preg_replace('/\s+/', '', strtolower($first_name)) .".". $uid;
-            $add_temp_username = Member::where("Id", "=", $uid)
-                ->update(
-                    array("username" => $temp_username)
-                );
+            if($username == null) {
+
+                $uid = $member[$i]["Id"];
+
+                $first_name = $member[$i]["first_name"];
+
+                $temp_username = preg_replace('/\s+/', '', strtolower($first_name)) .".". $uid;
+
+                $add_temp_username = Member::where("Id", "=", $uid)
+                    ->update(
+                        array("username" => $temp_username)
+                    );
+            }
+            
         }
 
         return array("Result" => "DONE");
