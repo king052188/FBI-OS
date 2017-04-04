@@ -32,8 +32,11 @@ Route::post('/login/processing', 'MemberController@member_sign_in_validation');
 Route::any('/login/execute/v2', 'MemberController@member_sign_in_validation_v2');
 
 Route::get('/endorsement/link/{endorser?}', 'MemberController@member_url_validation');
-Route::get('/sign-up', 'MemberController@member_sign_up_index');
+Route::get('/sign-up/{clear?}', 'MemberController@member_sign_up_index');
 Route::post('/sign-up/processing', 'MemberController@member_sign_up_execute');
+
+Route::get('/registration/verification', 'PageController@clear_cache');
+Route::get('/registration/completed', 'PageController@registration_completed');
 
 Route::get('/dashboard', 'MemberController@dashboard_index');
 

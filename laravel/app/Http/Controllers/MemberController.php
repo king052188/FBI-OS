@@ -66,7 +66,13 @@ class MemberController extends Controller
         }
     }
 
-    public function member_sign_up_index(Request $request) {
+    public function member_sign_up_index(Request $request, $clear = null) {
+        if($clear != null) {
+            Helper::flushCookies();
+            Helper::flushCookies("endorsement_session");
+            return redirect('/registration/verification');
+        }
+
         $helper = Helper::ssl_secured($request);
         $endorser_account = Helper::getCookies('endorsement_session');
         return view('member.signup', compact('helper', 'endorser_account'));
@@ -134,7 +140,7 @@ class MemberController extends Controller
             $h = Helper::post_password_email_send($request->first_name, $request->email, $user_hash_code, $password_code["new_password"]);
 
             if($h["Status"] == 200) {
-                return redirect('/login');
+                return redirect('/sign-up/verification');
             }
 
             return redirect('/sign-up')->with('message', 'Oops, Error sending your account information, Please contact FBI Admin.');

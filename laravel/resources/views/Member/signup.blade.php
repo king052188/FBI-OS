@@ -6,6 +6,7 @@ $url_secured = $helper["status"];
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta http-equiv="pragma" content="no-cache" />
     <title>FBI - Sign Up</title>
     <!-- Favicon-->
     <link rel="icon" href="{{ asset('images/k-icon.png', $url_secured) }}" type="image/x-icon">
