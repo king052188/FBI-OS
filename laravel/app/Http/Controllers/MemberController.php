@@ -194,11 +194,28 @@ class MemberController extends Controller
 
         if($user[0]->role == 1) {
             return view('layout.404', compact('helper'));
-
         }
 
-        return view('member.members');
+        $sort_id = 0;
 
+        $sort_name = "Pending";
+
+        if($type == "activated") {
+            $sort_id = 3;
+            $sort_name = "Activated";
+        }
+        else if ($type == "on-processed") {
+            $sort_id = 2;
+            $sort_name = "On-Processed";
+        }
+        else {
+            $sort_id = 1;
+            $sort_name = "Pending";
+        }
+
+        $members = DB::select("SELECT * FROM member_table WHERE status = {$sort_id};");
+
+        return view('member.members', compact('helper', 'members'));
     }
 
     public function edit_profile_index(Request $request) {

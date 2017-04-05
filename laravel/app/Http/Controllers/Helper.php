@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use DB;
@@ -76,6 +77,21 @@ class Helper extends Controller
         \Cookie::queue(\Cookie::forget($cookies_name));
 
         \Cache::flush();
+    }
+
+    public static function get_current_time_stamp($value = null) {
+        if($value == null) {
+            $value = Carbon::now();
+        }
+        $date_now = Carbon::createFromFormat('Y-m-d H:i:s', $value);
+        $date_time_stamp = $date_now->setTimezone('Asia/Taipei')->format('Y/m/d h:i:s A');
+        return $date_time_stamp;
+    }
+
+    public static function do_parse_time_stamp($value) {
+        $date_time_stamp = Carbon::createFromTimeStamp($value);
+        //format('Y-m-d H:i:s')
+        return $date_time_stamp;
     }
 
     public static function get_random_password($value = null) {

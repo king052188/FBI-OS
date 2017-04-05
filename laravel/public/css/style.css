@@ -4518,6 +4518,8 @@ section.content {
   margin-bottom: 0; }
 
 /* Tables ====================================== */
+
+
 .table tbody tr td, .table tbody tr th {
   padding: 10px;
   border-top: 1px solid #eee;
@@ -4555,6 +4557,8 @@ section.content {
   .table-bordered thead tr th {
     padding: 10px;
     border: 1px solid #eee; }
+
+
 
 /* Panel ======================================= */
 .panel-group .panel-col-red {
