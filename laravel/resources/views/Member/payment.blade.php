@@ -63,19 +63,19 @@
 
                 <div class="clearfix"> </div>
 
-                <div class="col-md-12 form-group1 group-mail">
-                    <label class="control-label">Upload 1x1 ID Picture (required)</label>
-                    <a href="#" id="btnIDUpload" class="btn btn-primary">Upload</a>
-                </div>
+                {{--<div class="col-md-12 form-group1 group-mail">--}}
+                    {{--<label class="control-label">Upload 1x1 ID Picture (required)</label>--}}
+                    {{--<a href="#" id="btnIDUpload" class="btn btn-primary">Upload</a>--}}
+                {{--</div>--}}
 
-                <div class="clearfix"> </div>
+                {{--<div class="clearfix"> </div>--}}
 
-                <div class="col-md-12 form-group1 group-mail">
-                    <label class="control-label">Upload Scanned Signature (required)</label>
-                    <a class="btn btn-primary">Upload</a>
-                </div>
+                {{--<div class="col-md-12 form-group1 group-mail">--}}
+                    {{--<label class="control-label">Upload Scanned Signature (required)</label>--}}
+                    {{--<a class="btn btn-primary">Upload</a>--}}
+                {{--</div>--}}
 
-                <div class="clearfix"> </div>
+                {{--<div class="clearfix"> </div>--}}
 
                 <div class="col-md-12 form-group2 group-mail">
                     <label class="control-label">Do you hereby authorize the company to deduct from your rewards and virtual wallet account all payments and charges that will be incurred your my participation and availment of the company’s program and services.</label>
