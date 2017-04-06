@@ -63,19 +63,26 @@
 
                 <div class="clearfix"> </div>
 
-                {{--<div class="col-md-12 form-group1 group-mail">--}}
-                    {{--<label class="control-label">Upload 1x1 ID Picture (required)</label>--}}
-                    {{--<a href="#" id="btnIDUpload" class="btn btn-primary">Upload</a>--}}
-                {{--</div>--}}
+                <div class="col-md-12 form-group1 group-mail">
+                    <label class="control-label">1x1 ID Picture, Send a link of print-screen (<a href="https://prnt.sc/" target="_blank">https://prnt.sc/</a>)</label>
+                    <input type="text" id="id_picture" name="id_picture" placeholder="1x1 ID picture here..." required="">
+                </div>
 
-                {{--<div class="clearfix"> </div>--}}
+                <div class="clearfix"> </div>
 
-                {{--<div class="col-md-12 form-group1 group-mail">--}}
-                    {{--<label class="control-label">Upload Scanned Signature (required)</label>--}}
-                    {{--<a class="btn btn-primary">Upload</a>--}}
-                {{--</div>--}}
+                <div class="col-md-12 form-group1 group-mail">
+                    <label class="control-label">Signature, Send a link of print-screen (<a href="https://prnt.sc/" target="_blank">https://prnt.sc/</a>)</label>
+                    <input type="text" id="signature" name="signature" placeholder="Signature here..." required="">
+                </div>
 
-                {{--<div class="clearfix"> </div>--}}
+                <div class="clearfix"> </div>
+
+                <div class="col-md-12 form-group1 group-mail">
+                    <label class="control-label">Valid ID, Send a link of print-screen (<a href="https://prnt.sc/" target="_blank">https://prnt.sc/</a>)</label>
+                    <input type="text" id="valid_id" name="valid_id" placeholder="Valid ID here..." required="">
+                </div>
+
+                <div class="clearfix"> </div>
 
                 <div class="col-md-12 form-group2 group-mail">
                     <label class="control-label">Do you hereby authorize the company to deduct from your rewards and virtual wallet account all payments and charges that will be incurred your my participation and availment of the company’s program and services.</label>

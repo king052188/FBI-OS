@@ -213,9 +213,25 @@ class MemberController extends Controller
             $sort_name = "Pending";
         }
 
-        $members = DB::select("SELECT * FROM member_table WHERE status = {$sort_id};");
+        if( IsSet($request->search) ) {
 
-        return view('member.members', compact('helper', 'members'));
+            $keyword = "SELECT * FROM member_table WHERE ";
+            $keyword .= "(first_name LIKE '%". $request->search ."%' OR ";
+            $keyword .= "middle_name LIKE '%". $request->search ."%' OR ";
+            $keyword .= "last_name LIKE '%". $request->search ."%' OR ";
+            $keyword .= "email LIKE '%". $request->search ."%' OR ";
+            $keyword .= "mobile LIKE '%". $request->search ."%') AND ";
+            $keyword .= "status = {$sort_id} ORDER BY created_at ASC;";
+
+            $members = DB::select($keyword);
+        }
+        else {
+            $members = DB::select("SELECT * FROM member_table WHERE status = {$sort_id} ORDER BY created_at ASC;");
+        }
+
+        $sort_type = ["name" => $sort_name];
+
+        return view('member.members', compact('helper', 'user', 'members', 'sort_type'));
     }
 
     public function edit_profile_index(Request $request) {
@@ -413,6 +429,9 @@ class MemberController extends Controller
         $p->mode_of_payment = $request->mode_of_payment;
         $p->amount = $amount;
         $p->proof_of_payment_url = $request->proof_of_payment_url;
+        $p->id_picture_url = $request->id_picture;
+        $p->signature_url = $request->signature;
+        $p->valid_id_url = $request->valid_id;
         $p->confirming_a = (int)$request->confirming_a;
         $p->confirming_b = (int)$request->confirming_b;
         $p->confirming_c = (int)$request->confirming_c;

@@ -126,6 +126,24 @@ class Helper extends Controller
         return $total[0]->total_conntected;
     }
 
+    public static function get_total_members($type) {
+
+        $sort_id = 0;
+        
+        if($type == "activated") {
+            $sort_id = 3;
+        }
+        else if ($type == "on-processed") {
+            $sort_id = 2;
+        }
+        else {
+            $sort_id = 1;
+        }
+        $members = DB::select("SELECT COUNT(*) total_count FROM member_table WHERE status = {$sort_id};");
+
+        return $members[0]->total_count;
+    }
+
     public static function post_email_send($uid = 3, $temp = "FBI.Notification", $arr = array()) {
         if( count($arr) == 0) {
             return false;

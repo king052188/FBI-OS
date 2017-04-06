@@ -16,7 +16,10 @@ class AppServiceProvider extends ServiceProvider
     {
         view()->composer('layout.portal', function($view)
         {
-            $view->with('member', Helper::getCookies());
+            $view->with('member', Helper::getCookies())
+            ->with('activated', Helper::get_total_members('activated'))
+            ->with('on_processed', Helper::get_total_members('on-processed'))
+            ->with('pending', Helper::get_total_members('pending'));
         });
     }
 
