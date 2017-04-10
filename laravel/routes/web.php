@@ -43,6 +43,9 @@ Route::get('/dashboard', 'MemberController@dashboard_index');
 Route::get('/edit-profile', 'MemberController@edit_profile_index');
 Route::post('/edit-profile/{type}/execute', 'MemberController@edit_profile_execute');
 
+
+Route::get('/activate/account/{uid}', 'MemberController@activate_account');
+
 Route::get('/payment', 'MemberController@payment_index');
 Route::post('/payment/execute', 'MemberController@payment_execute');
 

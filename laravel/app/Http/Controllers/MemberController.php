@@ -299,6 +299,24 @@ class MemberController extends Controller
         }
     }
 
+    public function activate_account(Request $request, $uid) {
+
+        $m = Member::where("Id", "=", $uid)
+            ->update(
+                array("status" => 3)
+            );
+
+        if($m) {
+            return array(
+                "status" => 200
+            );
+        }
+
+        return array(
+            "status" => 500
+        );
+    }
+
     public function basic_information(Request $request, $user_uid) {
         $check_ = MemberBasic::where("uid", "=", $user_uid);
 

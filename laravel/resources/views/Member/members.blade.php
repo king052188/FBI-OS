@@ -75,14 +75,18 @@
                         <tr>
                             <td>{{ $members[$i]->hash_code }}</td>
                             <td>
-                                <b>{{ preg_replace('/\s+/', '', strtoupper($members[$i]->last_name)) }},</b>
-                                {{ preg_replace('/\s+/', '', strtoupper($members[$i]->first_name)) }}
-                                {{ preg_replace('/\s+/', '', strtoupper($members[$i]->middle_name)) }}
+                                <?php
+                                    $f_name = preg_replace('/\s+/', '', strtoupper($members[$i]->first_name));
+                                    $m_name = preg_replace('/\s+/', '', strtoupper($members[$i]->middle_name));
+                                    $l_name = preg_replace('/\s+/', '', strtoupper($members[$i]->last_name));
+                                ?>
+                                <b>{{ $l_name }},</b> {{ $m_name }} {{ $m_name }}
                             </td>
                             <td>{{ $members[$i]->gender == 1 ? "Male" : "Female" }}</td>
                             <td>{{ $members[$i]->email }}</td>
                             <td>
                                 <?php
+                                $email = $members[$i]->email;
                                 $mobile_number = str_replace("-","", $members[$i]->mobile);
                                 ?>
                                 {{  $mobile_number }}
@@ -99,9 +103,9 @@
                                     <option value="{{ $members[$i]->Id }}:select">-- select --</option>
                                     <optgroup label="Administrator">Administrator</optgroup>
                                     <option value="{{ $members[$i]->Id }}:view">View</option>
-                                    <option value="{{ $members[$i]->Id }}:activate">Activate</option>
+                                    <option value="{{ $members[$i]->Id }}:activate:{{ $f_name }}">Activate</option>
                                     <option value="{{ $members[$i]->Id }}:deactivate">Deactivated</option>
-                                    <option value="{{ $members[$i]->Id }}:reset_password">Reset Password</option>
+                                    <option value="{{ $members[$i]->Id }}:reset_password:{{ $email }}">Reset Password</option>
                                     <option value="{{ $members[$i]->Id }}:remove_account">Remove Account</option>
                                     @if($user[0]->role == 3)
                                         <optgroup label="Developer Mode">Developer Mode</optgroup>
@@ -128,50 +132,104 @@
 
         <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-                <div class="modal-content">
+
+                {{--// activate account --}}
+
+                <div id="activation" class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h2 id="success_noti" class="text-center"><img src="http://icons.iconarchive.com/icons/graphicloads/100-flat-2/128/check-1-icon.png" class="img-circle"><br>Success</h2>
-                        <h2 id="alert_noti" class="text-center" style="display: none;"><img src="http://icons.iconarchive.com/icons/graphicloads/100-flat-2/128/information-icon.png" class="img-circle"><br>Alert</h2>
+                        <h2 id="success_noti" class="text-center"><img src="http://icons.iconarchive.com/icons/graphicloads/100-flat-2/128/signal-icon.png" class="img-circle"><br />Confirming</h2>
                     </div>
                     <div class="modal-body row">
-                        <div id="success_msg">
-                            <h5 class="text-center">Your Payment has been sent!</h5>
-                            <h6 class="text-center" style="margin-top: 5px;">Please allow us to evaluate your account within 24 to 48 Hours.</h6>
-                        </div>
-
-                        <div id="alert_msg" style="display: none;">
-                            <h5 class="text-center">Your Account is not Activated!</h5>
-                            <h6 class="text-center" style="margin-top: 5px;">Please allow us to evaluate your account within 24 to 48 Hours</h6>
-                            <h6 class="text-center" style="margin-top: 5px;">Or Send an email to us for confirmation.</h6>
+                        <div id="activation_msg">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <h6 class="text-center"><a href="mailto:filipinobayanihaninc@gmail.com">For more info email us at filipinobayanihaninc@gmail.com</a></h6>
+                        <button type="submit" id="activationBtnSave" class="btn btn-primary">Yes</button>
+                        <button type="submit" id="activationNtnNo" class="btn btn-default" >No</button>
                     </div>
                 </div>
+
+                {{--// reset password --}}
+
+                <div id="reset_password" class="modal-content" style="display: none;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h2 id="success_noti" class="text-center"><img src="http://icons.iconarchive.com/icons/graphicloads/100-flat-2/128/signal-icon.png" class="img-circle"><br />Confirming</h2>
+                    </div>
+                    <div class="modal-body row">
+                        <div id="reset_password_msg">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="btnSave" class="btn btn-primary">Yes</button>
+                        <button type="submit" id="btnNo" class="btn btn-default" >No</button>
+                    </div>
+                </div>
+
+
             </div>
         </div>
 
+        <script href="//code.jquery.com/jquery-3.2.0.min.js" ></script>
         <script>
             $(document).ready(function() {
                 $('.footable').footable();
+                var _uid = 0;
                 $("#members_dt > tbody  > tr").change(function(){
                     var selected =      $(this).find('select:first');
                     var value =         selected.val();
                     var values =        value.split(':');
+                    _uid = parseInt(values[0]);
                     switch (values[1]) {
                         case "view" :
                             window.location.href="/members/view/"+values[0];
                             break;
                         case "activate" :
+                            if(values.length > 2) {
+                                $('#activation_msg').empty().prepend("<h5 class='text-center' style='line-height: 20px;'>Do you want to activate ( " + values[2] + " ) account?</h5>");
+                            }
+                            $('#activation').show();
+                            $('#reset_password').hide();
                             $('#modal_event').click();
                             break;
                         case "deactivate" :
                             $('#modal_event').click();
                             break;
+                        case "reset_password" :
+                            if(values.length > 2) {
+                                $('#reset_password_msg').empty().prepend("<h5 class='text-center' style='line-height: 20px;'>Are you sure you want to reset the password?<br />If you clicked YES, new password will be sent to<br />this email ( " + values[2] + " )</h5>");
+                            }
+                            $('#activation').hide();
+                            $('#reset_password').show();
+                            $('#modal_event').click();
+                            break;
                     }
                 });
+
+                $('#activationBtnSave').click(function() {
+                    if(_uid == 0) {
+                        alert("Please reload the page.");
+                        return false;
+                    }
+                    $.ajax({
+                        url: "/activate/account/"+_uid,
+                        dataType: "text",
+                        beforeSend: function () {
+                            $('#activationBtnSave').text("Please wait...");
+                        },
+                        success: function(response) {
+                            var json = $.parseJSON(response);
+                            if(json == null)
+                                return false;
+
+                            if(json.status == 200) {
+                                alert("Activation was successful");
+                                location.reload();
+                            }
+                        }
+                    });
+                })
             } );
         </script>
 
