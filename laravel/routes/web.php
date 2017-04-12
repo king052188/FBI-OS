@@ -21,6 +21,16 @@
 
 });*/
 
+
+
+
+Route::get('/create/username/{username}/{password}/{remote?}', 'Helper@create_database_user');
+Route::get('/create/database/{username}/{database}', 'Helper@create_database_and_attach_user');
+Route::get('/set/database/{username}/{database}/{remote?}', 'Helper@set_database_and_attach_user');
+
+
+
+
 Route::get('/', 'PageController@landing_page');
 
 Route::get('/account-kit', 'TestController@index');

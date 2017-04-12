@@ -18,6 +18,136 @@ class Helper extends Controller
     public static $app_secret = "99647c4751d6afe5a54cbc1d4c20773b";
     public static $account_kit_api_version = "v1.1";
 
+    public static function create_database_user($username, $password, $withRemote = null) {
+
+        try {
+            $db = DB::statement("CREATE USER '{$username}'@'localhost' IDENTIFIED BY '{$password}';");
+
+            if($withRemote != null) {
+                $db = DB::statement("CREATE USER '{$username}'@'%' IDENTIFIED BY '{$password}';");
+            }
+
+            if($db) {
+
+                $db = DB::statement("GRANT USAGE ON *.* TO '{$username}'@'%' REQUIRE NONE WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;");
+
+                if($db) {
+
+                    return [
+                        "status" => "success",
+                        "code" => 200,
+                        "message" => "[{$username}] database was created and added privileges to [{$username}]."
+                    ];
+                }
+
+                return [
+                    "status" => "fail",
+                    "code" => 500,
+                    "message" => "Error adding privileges of database."
+                ];
+            }
+
+            return [
+                "status" => "fail",
+                "code" => 500,
+                "message" => "{$username} database error while in processing."
+            ];
+
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            return [
+                "status" => $e->errorInfo[0],
+                "code" => $e->errorInfo[1],
+                "message" => $e->errorInfo[2],
+            ];
+
+        } catch (PDOException $e) {
+            dd($e);
+        }
+    }
+
+    public static function create_database_and_attach_user($username, $database) {
+
+        try {
+            $db = DB::statement("CREATE DATABASE `{$database}`;");
+
+            if($db) {
+
+                $db = DB::statement("GRANT ALL PRIVILEGES ON `{$database}`.* TO '{$username}'@'localhost' WITH GRANT OPTION;");
+
+                if($db) {
+
+                    return [
+                        "status" => "success",
+                        "code" => 200,
+                        "message" => "[{$database}] database was created and added privileges to [{$username}]."
+                    ];
+                }
+
+                return [
+                    "status" => "fail",
+                    "code" => 500,
+                    "message" => "Error adding privileges of database."
+                ];
+            }
+
+            return [
+                "status" => "fail",
+                "code" => 500,
+                "message" => "{$database} database error while in processing."
+            ];
+
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            return [
+                "status" => $e->errorInfo[0],
+                "code" => $e->errorInfo[1],
+                "message" => $e->errorInfo[2],
+            ];
+
+        } catch (PDOException $e) {
+            dd($e);
+        }
+    }
+
+    public static function set_database_and_attach_user($username, $database, $withRemote = null) {
+
+        try {
+
+            $db = DB::statement("GRANT ALL PRIVILEGES ON `{$database}`.* TO '{$username}'@'localhost' WITH GRANT OPTION;");
+
+            if($withRemote != null) {
+                $db = DB::statement("GRANT ALL PRIVILEGES ON `{$database}`.* TO '{$username}'@'%' WITH GRANT OPTION;");
+            }
+
+            if($db) {
+
+                return [
+                    "status" => "success",
+                    "code" => 200,
+                    "message" => "[{$database}] database was created and added privileges to [{$username}]."
+                ];
+            }
+
+            return [
+                "status" => "fail",
+                "code" => 500,
+                "message" => "Error adding privileges of database."
+            ];
+
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            return [
+                "status" => $e->errorInfo[0],
+                "code" => $e->errorInfo[1],
+                "message" => $e->errorInfo[2],
+            ];
+
+        } catch (PDOException $e) {
+            dd($e);
+        }
+    }
+
     public static function domain_check($sub = "web", $path = "/", $secured = false) {
 
         $s = $sub . ".";
