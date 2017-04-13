@@ -233,6 +233,21 @@ class Helper extends Controller
         return array("new_password" => $value, "hash_password" => $result);
     }
 
+    public static function is_exist($account) {
+
+        $random = DB::select("
+                  SELECT * FROM member_table 
+                  WHERE hash_code = '{$account}' OR username = '{$account}' 
+                  OR email = '{$account}' OR mobile = '{$account}';
+        ");
+
+        if( COUNT($random) > 0 ) {
+            return true;
+        }
+
+        return false;
+    }
+
     public static function get_member_information($account) {
         $random = DB::select("
                   SELECT * FROM member_table 

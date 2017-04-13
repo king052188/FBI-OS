@@ -41,6 +41,11 @@ $url_secured = $helper["status"];
         .login-box {
             margin: -40px;;
         }
+
+        .checking {
+            color: red;
+            font-size: .8em;
+        }
     </style>
 </head>
 {{--//4267b2--}}
@@ -101,20 +106,22 @@ $url_secured = $helper["status"];
                     </div>
                 </div>
                 <div class="input-group">
-                        <span class="input-group-addon">
-                            <i class="material-icons">email</i>
-                        </span>
+                    <span class="input-group-addon">
+                        <i class="material-icons">email</i>
+                    </span>
                     <div class="form-line">
                         <input type="email" class="form-control" id="email" name="email" placeholder="Email" required autofocus>
                     </div>
+                    <span class="checking" id="span_email" style="display: none;">Checking...</span>
                 </div>
                 <div class="input-group">
-                        <span class="input-group-addon">
-                            <i class="material-icons">phonelink_ring</i>
-                        </span>
+                    <span class="input-group-addon">
+                        <i class="material-icons">phonelink_ring</i>
+                    </span>
                     <div class="form-line">
-                        <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Mobile" required autofocus>
+                        <input type="number" class="form-control" id="mobile" name="mobile" placeholder="Mobile" required autofocus>
                     </div>
+                    <span class="checking" id="span_mobile" style="display: none;">Checking...</span>
                 </div>
                 @if( $endorser_account == null)
                     <div class="input-group">
@@ -170,12 +177,7 @@ $url_secured = $helper["status"];
     </script>
 @endif
 <script>
-    $(document).ready(function() {
-        $( "#txt_date_of_birth" ).click(function() {
-            $("#txt_date_of_birth").hide();
-            $("#date_of_birth").show();
-        });
-    })
+
 </script>
 </body>
 </html>
