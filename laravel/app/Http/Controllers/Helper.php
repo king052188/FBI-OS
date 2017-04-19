@@ -305,7 +305,7 @@ class Helper extends Controller
 
         return $result;
     }
-
+    
     public static function post_password_email_send($name, $email, $username, $password) {
         $message =      "<h3>We would like to personally welcome you to our community.</h3>";
         $message .=     "Login: www.fbi-ph.org/login<br />";
